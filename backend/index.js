@@ -21,7 +21,9 @@ app.use(express.json());
 app.use("/user", userRoute);
 app.use("/feedback", feedbackRoute);
 
-app.get("/dbtest", async (req, res) => {
-  const [result] = await conn.query("select * from users");
-  res.send(result);
+app.get("/health", async (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: "HEALTH OK",
+  });
 });
