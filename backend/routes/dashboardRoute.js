@@ -6,7 +6,6 @@ import {
 
 const router = express.Router();
 
-// router.post('/add',createEvent)
-router.get('/view',viewDashboard)
+router.get('/',viewDashboard)
 
 export default router;
