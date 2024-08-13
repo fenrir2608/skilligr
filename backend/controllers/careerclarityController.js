@@ -1,3 +1,5 @@
+import conn from "../helpers/connection.js"
+
 export const insertScore = (req, res) => {
     // TODO: Implement insert score logic
 };
