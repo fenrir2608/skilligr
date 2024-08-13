@@ -3,7 +3,7 @@ import {
     insertScore,
     viewAllLearningpaths,
     viewLearningpath
-} from '../controllers/careerclarityController.js'
+} from '../controllers/careerClarityController.js'
 
 const router = express.Router()
 
