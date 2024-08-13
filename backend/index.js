@@ -6,6 +6,8 @@ import eventsRoute from "./routes/eventsRoute.js";
 import jobsRoute from "./routes/jobsRoute.js";
 import learningresourcesRoute from "./routes/learningresourcesRoute.js"
 import notificationRoute from "./routes/notificationRoute.js"
+import dashboardRoute from "./routes/dashboardRoute.js";
+import careerclarityRoute from "./routes/careerclarityRoute.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -28,6 +30,8 @@ app.use("/events", eventsRoute)
 app.use("/jobs", jobsRoute)
 app.use("/resources", learningresourcesRoute)
 app.use("/notifications", notificationRoute)
+app.use("/dashboard", dashboardRoute);
+app.use("/careerclarity", careerclarityRoute);
 
 app.get("/health", async (req, res) => {
   return res.status(200).json({
