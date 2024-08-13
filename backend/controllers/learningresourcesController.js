@@ -2,7 +2,7 @@ import conn from "../helpers/connection.js"
 
 export const createResource = (req, res) => {
     // TODO: Implement create resource logic
-};
+}
 
 export const viewAllResource = (req, res) => {
     // TODO: Implement view resources logic
