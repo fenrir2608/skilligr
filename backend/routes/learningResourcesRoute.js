@@ -4,7 +4,7 @@ import {
     viewAllResource,
     viewResource,
     deleteResource
-} from '../controllers/learningresourcesController.js';
+} from '../controllers/learningResourcesController.js';
 
 const router = express.Router();
 
