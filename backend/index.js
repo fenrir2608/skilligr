@@ -4,7 +4,7 @@ import userRoute from "./routes/userRoute.js";
 import feedbackRoute from "./routes/feedbackRoute.js";
 import eventsRoute from "./routes/eventsRoute.js";
 import jobsRoute from "./routes/jobsRoute.js";
-import learningResourcesRoute from "./routes/learningResourcesRoute.js"
+import learningResourcesRoute from "./routes/learningResourcesRoute.js";
 import notificationRoute from "./routes/notificationRoute.js"
 import dashboardRoute from "./routes/dashboardRoute.js";
 import careerClarityRoute from "./routes/careerClarityRoute.js";
