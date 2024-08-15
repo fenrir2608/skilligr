@@ -39,3 +39,8 @@ app.get("/health", async (req, res) => {
     message: "HEALTH OK",
   });
 });
+
+app.get("/health1", async (req, res) => {
+  const result = await conn.query('select * from skilligr.users;')
+  res.send(result[0])
+});
