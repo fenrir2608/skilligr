@@ -1,0 +1,7 @@
+//rename this to .env and update the values accordingly.
+
+PORT = 3000
+DBHOST = "localhost"
+DBUSER = "root"
+DBPWD = ""
+DBDB = "skilligr_test"
