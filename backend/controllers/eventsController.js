@@ -61,6 +61,14 @@ export const viewEvent = async (req, res) => {
   // TODO: Implement view event logic
   try {
     const id = req.params.id;
+
+    const [checkResult] = await conn.query(`select * from events where id = ?`, [id]);
+    if(checkResult.length === 0)
+    {
+      return res.status(404).send("event not found");
+    }
+
+
     const [result] = await conn.query(
       `SELECT 
     e.title,
