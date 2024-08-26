@@ -8,6 +8,7 @@ import learningResourcesRoute from "./routes/learningResourcesRoute.js";
 import notificationRoute from "./routes/notificationRoute.js"
 import dashboardRoute from "./routes/dashboardRoute.js";
 import careerClarityRoute from "./routes/careerClarityRoute.js";
+import cookieParser from "cookie-parser";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -23,6 +24,7 @@ else{
   console.log("An error occured.")
 }
 
+app.use(cookieParser());
 app.use(express.json());
 app.use("/user", userRoute);
 app.use("/feedback", feedbackRoute);
