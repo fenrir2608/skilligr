@@ -86,17 +86,8 @@ export const viewEvent = async (req, res) => {
   }
 };
 
-export const updateEvent = (req, res) => {
-  // TODO: Implement update event logic
-};
+export const updateEvent = async (req, res) => {};
 
 export const deleteEvent = (req, res) => {
   // TODO: Implement delete event logic
-  try {
-    const id = req.query.id;
-    const [result] = conn.query(`DELETE FROM events WHERE id = ?`, [id]);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("cant delete event");
-  }
 };
