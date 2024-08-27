@@ -8,7 +8,7 @@ import {
 const router = express.Router();
 
 router.post("/add", insertFeedback);
-router.get("/view:id", viewFeedback);
+router.get("/view/:id", viewFeedback);
 router.get("/viewAll", viewAllFeedback);
 
 
