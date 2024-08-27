@@ -77,7 +77,7 @@ export const viewNotification = async (req, res) => {
   }
 };
 
-export const updateNotification = async (req, res) => {
+export const updateNotification = async (req, res) => { //put condition that only the admin who created notofication can update it.
     try {
       const { id } = req.params;
       const { description, created_by, label, dept, semester } = req.body;
