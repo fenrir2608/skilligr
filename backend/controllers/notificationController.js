@@ -107,6 +107,10 @@ export const deleteNotification = async (req, res) => {
     res.status(500).send('Cannot delete notification');
   }
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 554cb34c82f253af70974ee3f69fc7b40c039689
 export const updateNotification = async (req, res) => { //put condition that only the admin who created notofication can update it.
     try {
       const { id } = req.params;
@@ -135,4 +139,8 @@ export const updateNotification = async (req, res) => { //put condition that onl
       console.error("error: ", error);
       res.status(500).send("Failed to update notification");
     }
+<<<<<<< HEAD
   };
+=======
+};
+>>>>>>> 554cb34c82f253af70974ee3f69fc7b40c039689
