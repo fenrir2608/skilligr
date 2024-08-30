@@ -1,4 +1,4 @@
-//rename this to .env and update the values accordingly.
+//add these to a .env file and update the values accordingly.
 
 PORT = 3000
 DBHOST = "localhost"
