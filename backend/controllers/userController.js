@@ -323,7 +323,7 @@ export const activateUser = async (req, res) => {
   try {
     const { userId } = req.body;
 
-    await conn.query(`UPDATE users SET status = 0 WHERE id = ?`, [userId]);
+    await conn.query(`UPDATE users SET isDeleted = 0 WHERE id = ?`, [userId]);
 
     return res.status(200).json({
       success: true,
