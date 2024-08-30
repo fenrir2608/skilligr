@@ -108,28 +108,45 @@ export const deleteNotification = async (req, res) => {
   }
 };
 
-export const updateNotification = async (req, res) => { //put condition that only the admin who created notofication can update it.
+export const updateNotification = async (req, res) => { 
     try {
       const { id } = req.params;
       const { description, created_by, label, dept, semester } = req.body;
 
-      const [adminUser] = await conn.query(`
-        SELECT id FROM users WHERE id = ? AND role = 'admin'
-      `, [created_by]);
+      const [notification] = await conn.query(`
+        SELECT created_by FROM notifications WHERE id = ?;
+      `, [id]);
 
-      if (adminUser.length === 0) {
-        return res.status(400).send("Invalid created_by ID");
-      }
-
-      const [result] = await conn.query(`
-        UPDATE notifications 
-        SET description = ?, created_by = ?, label = ?, dept = ?, semester = ?
-        WHERE id = ?
-      `, [description, created_by, label, dept, semester, id]);
-
-      if (result.affectedRows === 0) {
+      if (notification.length === 0) {
         return res.status(404).send("Notification not found");
       }
+
+      if (notification[0].created_by !== created_by) {
+        return res.status(403).send("You are not authorized to update this notification");
+      }
+
+      const fieldsToUpdate = {};
+      if (description !== undefined && description !== "") fieldsToUpdate.description = description;
+      if (label !== undefined && label !== "") fieldsToUpdate.label = label;
+      if (semester !== undefined && semester !== "") fieldsToUpdate.semester = semester;
+      if (dept !== undefined && dept !== "") fieldsToUpdate.dept = dept;
+
+      if (Object.keys(fieldsToUpdate).length === 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Nothing to update.",
+        });
+      }
+
+      const setClause = Object.keys(fieldsToUpdate)
+        .map(field => `${field} = ?`)
+        .join(', ');
+
+      const values = Object.values(fieldsToUpdate);
+      values.push(id); 
+
+      const query = `UPDATE notifications SET ${setClause} WHERE id = ?`;
+      await conn.query(query, values);
 
       res.status(200).send("Notification updated successfully");
     } catch (error) {
