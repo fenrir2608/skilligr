@@ -39,12 +39,63 @@ export const createJob = async (req, res) => {
     }
 };
 
-export const viewAllJob = (req, res) => {
-    // TODO: Implement view jobs logic
+export const viewAllJob = async (req, res) => {
+    try {
+        const [result] = await conn.query(`
+            SELECT 
+            j.id,
+            j.job_title,
+            j.company_name,
+            j.company_profile,
+            j.description,
+            j.registration_link,
+            CONVERT_TZ(j.deadline, '+00:00', '+05:30') as deadline,
+            u.full_name AS created_by
+            FROM 
+            jobs j
+            JOIN 
+            users u ON j.created_by = u.id;`);
+    
+        if (result.length === 0) {
+          return res.status(404).send("No Jobs posted.");
+        }
+    
+        res.status(200).send(result);
+      } catch (error) {
+        console.error("error: ", error);
+        res.status(500).send("Can't retrieve jobs!");
+      }
 };
 
-export const viewJob = (req, res) => {
-    // TODO: Implement view job logic
+export const viewJob = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const [result] = await conn.query(`
+            SELECT 
+            j.id,
+            j.job_title,
+            j.company_name,
+            j.company_profile,
+            j.description,
+            j.registration_link,
+            CONVERT_TZ(j.deadline, '+00:00', '+05:30') as deadline,
+            u.full_name AS created_by
+            FROM 
+            jobs j
+            JOIN 
+            users u ON j.created_by = u.id
+            AND j.id = ?;`, [id]);
+    
+        if (result.length === 0) {
+          return res.status(404).send("Job not found.");
+        }
+    
+        res.status(200).send(result);
+      } catch (error) {
+        console.error("error: ", error);
+        res.status(500).send("Can't retrieve job!");
+      }
 };
 
 export const updateJob = (req, res) => {
