@@ -98,4 +98,31 @@ export const updateEvent = async (req, res) => {};
 
 export const deleteEvent = (req, res) => {
   // TODO: Implement delete event logic
+ try {
+    const eventId = req.params.id;
+    const userId = 2 //req.session.userId; 
+
+    const [checkResult] = await conn.query(`
+      SELECT created_by FROM events WHERE id = ?;
+    `, [eventId]);
+
+    if (checkResult.length === 0) {
+      return res.status(404).send('event not found');
+    }
+
+    const event = checkResult[0];
+    if (event.created_by !== userId) {
+      return res.status(403).send('You are not authorized to delete this event');
+    }
+
+    const [deleteResult] = await conn.query(`
+      DELETE FROM event WHERE id = ?;
+    `, [eventId]);
+
+    res.status(200).send('event deleted successfully');
+  }
+ catch (error) {
+    console.error("error: ", error);
+    res.status(500).send("cant delete event");
+  }
 };
