@@ -98,10 +98,82 @@ export const viewJob = async (req, res) => {
       }
 };
 
-export const updateJob = (req, res) => {
-    // TODO: Implement update job logic
+export const updateJob = async (req, res) => {
+  try {
+    const { job_title, description, created_by, company_name, company_profile, registration_link, dept, semester, deadline} = req.body;
+    const { id } = req.params;
+
+    const [job] = await conn.query(`
+      SELECT created_by FROM jobs WHERE id = ?;
+    `, [id]);
+
+    if (job.length === 0) {
+      return res.status(404).send("Job Posting not found");
+    }
+
+    if (job[0].created_by !== created_by) {
+      return res.status(403).send("You are not authorized to update this job posting!");
+    }
+
+    const fieldsToUpdate = {};
+    if (job_title !== undefined && job_title !== "") fieldsToUpdate.job_title = job_title;
+    if (description !== undefined && description !== "") fieldsToUpdate.description = description;
+    if (company_name !== undefined && company_name !== "") fieldsToUpdate.company_name = company_name;
+    if (company_profile !== undefined && company_profile !== "") fieldsToUpdate.company_profile = company_profile;
+    if (registration_link !== undefined && registration_link !== "") fieldsToUpdate.registration_link = registration_link;
+    if (semester !== undefined && semester !== "") fieldsToUpdate.semester = semester;
+    if (dept !== undefined && dept !== "") fieldsToUpdate.dept = dept;
+    if (deadline !== undefined && deadline !== "") fieldsToUpdate.deadline = deadline;
+
+    if (Object.keys(fieldsToUpdate).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Nothing to update.",
+      });
+    }
+
+    const setClause = Object.keys(fieldsToUpdate)
+      .map(field => `${field} = ?`)
+      .join(', ');
+
+    const values = Object.values(fieldsToUpdate);
+    values.push(id); 
+
+    const query = `UPDATE jobs SET ${setClause} WHERE id = ?`;
+    await conn.query(query, values);
+
+    res.status(200).send("Job Posting updated successfully");
+  } catch (error) {
+    console.error("error: ", error);
+    res.status(500).send("Failed to update job posting");
+  }
 };
 
-export const deleteJob = (req, res) => {
-    // TODO: Implement delete job logic
+export const deleteJob = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const userId = 2 //req.session.userId; 
+
+    const [checkResult] = await conn.query(`
+      SELECT created_by FROM jobs WHERE id = ?;
+    `, [jobId]);
+
+    if (checkResult.length === 0) {
+      return res.status(404).send('Job posting not found');
+    }
+
+    const notification = checkResult[0];
+    if (notification.created_by !== userId) {
+      return res.status(403).send('You are not authorized to delete this Job Posting');
+    }
+
+    const [deleteResult] = await conn.query(`
+      DELETE FROM jobs WHERE id = ?;
+    `, [jobId]);
+
+    res.status(200).send('Job Posting deleted successfully');
+  } catch (error) {
+    console.error('Error deleting Job posting:', error);
+    res.status(500).send('Can not delete job posting');
+  }
 };
