@@ -42,8 +42,8 @@ export const viewAllEvent = async (req, res) => {
             e.event_link,
             e.dept,
             e.semester,
-            e.scheduled_at,
-            e.ends_at,
+            CONVERT_TZ(e.scheduled_at, '+00:00', '+05:30') as scheduled_at,
+            CONVERT_TZ(e.ends_at, '+00:00', '+05:30') as ends_at,
             u.full_name AS created_by_name
             FROM 
             events e
@@ -76,8 +76,8 @@ export const viewEvent = async (req, res) => {
     e.event_link,
     e.dept,
     e.semester,
-    e.scheduled_at,
-    e.ends_at,
+    CONVERT_TZ(e.scheduled_at, '+00:00', '+05:30') as scheduled_at,
+    CONVERT_TZ(e.ends_at, '+00:00', '+05:30') as ends_at,
     u.full_name AS created_by_name
     FROM 
     events e
@@ -162,7 +162,7 @@ export const updateEvent = async (req, res) => {
 export const deleteEvent = async (req, res) => {
   // TODO: Implement delete event logic
   try {
-    const { eventId } = req.body;
+    const eventId  = req.params.id;
     const userId = 2; //req.cookies.userId;
 
     const [checkResult] = await conn.query(
@@ -183,7 +183,7 @@ export const deleteEvent = async (req, res) => {
         .send("You are not authorized to delete this event");
     }
 
-    await conn.query(`DELETE FROM event WHERE id = ?;`, [eventId]);
+    await conn.query(`DELETE FROM events WHERE id = ?;`, [eventId]);
 
     res.status(200).send("event deleted successfully");
   } catch (error) {
