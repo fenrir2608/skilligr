@@ -94,34 +94,99 @@ export const viewEvent = async (req, res) => {
   }
 };
 
-export const updateEvent = async (req, res) => {};
+export const updateEvent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      title,
+      description,
+      event_link,
+      dept,
+      semester,
+      scheduled_at,
+      ends_at,
+    } = req.body;
 
-export const deleteEvent = (req, res) => {
+    const created_by = 2; //req.cookies.userId;
+
+    const [event] = await conn.query(`SELECT created_by FROM events WHERE id = ?`,[id]);
+
+    if (event.length === 0) {
+      return res.status(404).send("event not found");
+    }
+
+    if (event[0].created_by !== created_by) {
+      return res
+        .status(403)
+        .send("You are not authorized to update this event");
+    }
+
+    const fieldsToUpdate = {};
+    if (title !== undefined && title !== "") fieldsToUpdate.title = title;
+    if (description !== undefined && description !== "")
+      fieldsToUpdate.description = description;
+    if (event_link !== undefined && event_link !== "")
+      fieldsToUpdate.event_link = event_link;
+    if (semester !== undefined && semester !== "")
+      fieldsToUpdate.semester = semester;
+    if (dept !== undefined && dept !== "") fieldsToUpdate.dept = dept;
+    if (scheduled_at !== undefined && scheduled_at !== "")
+      fieldsToUpdate.scheduled_at = scheduled_at;
+    if (ends_at !== undefined && ends_at !== "")
+      fieldsToUpdate.ends_at = ends_at;
+
+    if (Object.keys(fieldsToUpdate).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Nothing to update.",
+      });
+    }
+
+    const setClause = Object.keys(fieldsToUpdate)
+      .map((field) => `${field} = ?`)
+      .join(", ");
+
+    const values = Object.values(fieldsToUpdate);
+    values.push(id);
+
+    const query = `UPDATE events SET ${setClause} WHERE id = ?`;
+    await conn.query(query, values);
+
+    res.status(200).send("event updated successfully");
+  } catch (error) {
+    console.error("error: ", error);
+    res.status(500).send("Failed to update event");
+  }
+};
+
+export const deleteEvent = async (req, res) => {
   // TODO: Implement delete event logic
- try {
-    const eventId = req.params.id;
-    const userId = 2 //req.session.userId; 
+  try {
+    const { eventId } = req.body;
+    const userId = 2; //req.cookies.userId;
 
-    const [checkResult] = await conn.query(`
+    const [checkResult] = await conn.query(
+      `
       SELECT created_by FROM events WHERE id = ?;
-    `, [eventId]);
+    `,
+      [eventId]
+    );
 
     if (checkResult.length === 0) {
-      return res.status(404).send('event not found');
+      return res.status(404).send("event not found");
     }
 
     const event = checkResult[0];
     if (event.created_by !== userId) {
-      return res.status(403).send('You are not authorized to delete this event');
+      return res
+        .status(403)
+        .send("You are not authorized to delete this event");
     }
 
-    const [deleteResult] = await conn.query(`
-      DELETE FROM event WHERE id = ?;
-    `, [eventId]);
+    await conn.query(`DELETE FROM event WHERE id = ?;`, [eventId]);
 
-    res.status(200).send('event deleted successfully');
-  }
- catch (error) {
+    res.status(200).send("event deleted successfully");
+  } catch (error) {
     console.error("error: ", error);
     res.status(500).send("cant delete event");
   }
