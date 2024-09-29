@@ -1,8 +1,10 @@
 import conn from "../helpers/connection.js";
+import { getCreatedById } from "../helpers/getCreatedById.js";
 
 export const createResource = async (req, res) => {
   try {
-    const { title, resources, type, content, dept, semester, created_by } =
+    const created_by = await getCreatedById(req);
+    const { title, resources, type, content, dept, semester } =
       req.body;
 
     const [adminUser] = await conn.query(
@@ -98,7 +100,7 @@ export const deleteResource = async (req, res) => {
   // TODO: Implement delete resource logic
   try {
     const { id } = req.params;
-    const userId = 1; //req.user.id;
+    const userId = await getCreatedById(req);
 
     const [checkResult] = await conn.query(
       `select * from resources where id = ?`,

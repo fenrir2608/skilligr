@@ -1,4 +1,5 @@
 import conn from "../helpers/connection.js";
+import { getCreatedById } from "../helpers/getCreatedById.js";
 
 export const createEvent = async (req, res) => {
   // TODO: Implement create event logic
@@ -10,7 +11,7 @@ export const createEvent = async (req, res) => {
     const semester = req.body.semester;
     const scheduled_at = req.body.scheduled_at;
     const ends_at = req.body.ends_at;
-    const created_by = req.body.created_by;
+    const created_by = await getCreatedById(req);
 
     const [result] = await conn.query(
       `INSERT INTO events (title, description, event_link, dept, semester, scheduled_at, ends_at, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -107,7 +108,7 @@ export const updateEvent = async (req, res) => {
       ends_at,
     } = req.body;
 
-    const created_by = 2; //req.cookies.userId;
+    const created_by = await getCreatedById(req); 
 
     const [event] = await conn.query(`SELECT created_by FROM events WHERE id = ?`,[id]);
 
@@ -163,7 +164,7 @@ export const deleteEvent = async (req, res) => {
   // TODO: Implement delete event logic
   try {
     const eventId  = req.params.id;
-    const userId = 2; //req.cookies.userId;
+    const userId = await getCreatedById(req);
 
     const [checkResult] = await conn.query(
       `

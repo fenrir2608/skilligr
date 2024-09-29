@@ -1,8 +1,10 @@
 import conn from "../helpers/connection.js"
+import { getCreatedById } from "../helpers/getCreatedById.js";
 
 export const createJob = async (req, res) => {
     try {
-        const { job_title, description, created_by, company_name, company_profile, registration_link, dept, semester, deadline} = req.body;
+        const created_by = await getCreatedById(req);
+        const { job_title, description, company_name, company_profile, registration_link, dept, semester, deadline} = req.body;
 
         const [adminUser] = await conn.query(`
             SELECT id FROM users WHERE id = ? AND role = 'admin'
@@ -100,7 +102,8 @@ export const viewJob = async (req, res) => {
 
 export const updateJob = async (req, res) => {
   try {
-    const { job_title, description, created_by, company_name, company_profile, registration_link, dept, semester, deadline} = req.body;
+    const created_by = await getCreatedById(req);
+    const { job_title, description, company_name, company_profile, registration_link, dept, semester, deadline} = req.body;
     const { id } = req.params;
 
     const [job] = await conn.query(`
@@ -152,7 +155,7 @@ export const updateJob = async (req, res) => {
 export const deleteJob = async (req, res) => {
   try {
     const jobId = req.params.id;
-    const userId = 2 //req.session.userId; 
+    const userId = await getCreatedById(req); 
 
     const [checkResult] = await conn.query(`
       SELECT created_by FROM jobs WHERE id = ?;
