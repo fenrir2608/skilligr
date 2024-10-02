@@ -1,9 +1,10 @@
 import conn from "../helpers/connection.js"
+import { getCreatedById } from "../helpers/getCreatedById.js";
 
 export const insertFeedback = async (req, res) => {
     try {
-        const { user_id, title, feedback, is_anonymous } = req.body;
-
+        const { title, feedback, is_anonymous } = req.body;
+        const user_id = await getCreatedById(req);
         const [user] = await conn.query(
             `
             SELECT * FROM user_details WHERE user_id = ?

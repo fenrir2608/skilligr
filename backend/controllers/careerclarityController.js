@@ -15,7 +15,25 @@ export const insertScore = async (req, res) => {
             return res.status(400).send("Invalid user_id");
         }
 
-        const [result] = await conn.query(
+        const [existingScore] = await conn.query(
+            `
+            SELECT * FROM career_assessment WHERE user_id = ?
+            `,
+            [user_id]
+        );
+
+        if (existingScore.length > 0) {
+            await conn.query(
+                `
+                UPDATE career_assessment SET score = ? WHERE user_id = ?
+                `,
+                [score, user_id]
+            );
+            return res.status(200).send("Score updated successfully!");
+        }
+
+        else {
+            await conn.query(
             `
             INSERT INTO career_assessment (user_id, score)
             VALUES (?, ?)
@@ -24,7 +42,7 @@ export const insertScore = async (req, res) => {
         );
 
         res.status(201).send("Score inserted successfully!");
-
+        }
     }catch(error){
         console.error("error: ", error);
         res.status(500).send("Failed to insert score!");
