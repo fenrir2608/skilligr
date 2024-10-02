@@ -1,8 +1,13 @@
 import conn from "../helpers/connection.js";
+import { getCreatedById } from "../helpers/getCreatedById.js";
+import { getUserDetails } from "../helpers/getUserDetails.js";
 
 export const createNotification = async (req, res) => {
     try {
-      const { description, created_by, label, dept, semester } = req.body;
+
+      const created_by = await getCreatedById(req);
+
+      const { description, label, dept, semester } = req.body;
 
       const [adminUser] = await conn.query(`
         SELECT id FROM users WHERE id = ? AND role = 'admin'
@@ -81,8 +86,8 @@ export const viewNotification = async (req, res) => {
 
 export const deleteNotification = async (req, res) => {
   try {
-    const notificationId = req.params.id;
-    const userId = 2 //req.session.userId; 
+    const notificationId = req.params.id;    
+    const userId = await getCreatedById(req);
 
     const [checkResult] = await conn.query(`
       SELECT created_by FROM notifications WHERE id = ?;
@@ -111,7 +116,8 @@ export const deleteNotification = async (req, res) => {
 export const updateNotification = async (req, res) => { 
     try {
       const { id } = req.params;
-      const { description, created_by, label, dept, semester } = req.body;
+      const created_by = await getCreatedById(req);
+      const { description, label, dept, semester } = req.body;
 
       const [notification] = await conn.query(`
         SELECT created_by FROM notifications WHERE id = ?;
@@ -154,3 +160,30 @@ export const updateNotification = async (req, res) => {
       res.status(500).send("Failed to update notification");
     }
 };
+
+export const getNotificationUser = async (req, res) => {
+  try {
+    const User = await getUserDetails(req);
+    console.log(User);
+    const [result] = await conn.query(`
+      SELECT 
+      n.id,
+      n.description, 
+      n.label,
+      u.full_name AS created_by
+      FROM 
+      notifications n
+      JOIN 
+      users u ON n.created_by = u.id 
+      AND n.dept ='?' AND n.semester = '?';`, [User.dept, User.semester]);
+
+    if (result.length === 0) {
+      return res.status(404).send("No Notifications.");
+    }
+
+    res.status(200).send(result);
+  } catch (error) {
+    console.error("error: ", error);
+    res.status(500).send("Can't get notifications!");
+  }
+}

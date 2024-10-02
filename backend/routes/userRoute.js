@@ -8,9 +8,9 @@ import {
   viewUser,
   updateUser,
   removeUser,
-  activateUser
+  activateUser,
 } from "../controllers/userController.js";
-import { verify,verifyAdmin } from "../middlewares/authMiddleware.js";
+import { verifyAdmin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -23,6 +23,10 @@ router.put("/reset", update);
 
 //Protected Routes
 router.put("/admin/activate", activateUser);
-router.route("/admin").get(verifyAdmin, viewUser).put(verifyAdmin, updateUser).delete(verifyAdmin, removeUser);
+router
+  .route("/admin")
+  .get(verifyAdmin, viewUser)
+  .put(verifyAdmin, updateUser)
+  .delete(verifyAdmin, removeUser);
 
 export default router;
