@@ -5,15 +5,23 @@ import {
     viewAllEvent,
     viewEvent,
     updateEvent,
-    deleteEvent
+    deleteEvent,
+    userEvents,
+    userEvent
 } from "../controllers/eventsController.js"
+import { verifyAdmin, verify } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.post('/add',createEvent)
-router.get('/view',viewAllEvent)
-router.get('/view/:id',viewEvent)
-router.put('/update/:id',updateEvent)
-router.delete('/delete/:id',deleteEvent)
+//User routes
+router.get('/getAll',verify, userEvents)
+router.get('/get/:id',verify, userEvent)
+
+//Admin routes
+router.post('/add',verifyAdmin, createEvent)
+router.get('/view',verifyAdmin, viewAllEvent)
+router.get('/view/:id',verifyAdmin, viewEvent)
+router.put('/update/:id',verifyAdmin, updateEvent)
+router.delete('/delete/:id',verifyAdmin, deleteEvent)
 
 export default router;
