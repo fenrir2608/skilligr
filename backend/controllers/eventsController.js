@@ -1,5 +1,6 @@
 import conn from "../helpers/connection.js";
 import { getCreatedById } from "../helpers/getCreatedById.js";
+import { getUserDetails } from "../helpers/getUserDetails.js";
 
 export const createEvent = async (req, res) => {
   // TODO: Implement create event logic
@@ -54,7 +55,7 @@ export const viewAllEvent = async (req, res) => {
     res.status(200).send(result);
   } catch (error) {
     console.error("error: ", error);
-    res.status(500).send("cant get notifications");
+    res.status(500).send("cant get events");
   }
 };
 
@@ -190,5 +191,57 @@ export const deleteEvent = async (req, res) => {
   } catch (error) {
     console.error("error: ", error);
     res.status(500).send("cant delete event");
+  }
+};
+
+export const userEvents = async (req, res) => {
+  try {
+    const User = await getUserDetails(req);
+    const [result] = await conn.query(`
+            SELECT
+            e.title, 
+            e.description,
+            e.event_link,
+            CONVERT_TZ(e.scheduled_at, '+00:00', '+05:30') as scheduled_at,
+            CONVERT_TZ(e.ends_at, '+00:00', '+05:30') as ends_at,
+            u.full_name AS created_by_name
+            FROM 
+            events e
+            JOIN 
+            users u ON e.created_by = u.id
+            AND e.dept =? AND e.semester = ?;`, [User.dept, User.semester]);
+
+    res.status(200).send(result);
+  } catch (error) {
+    console.error("error: ", error);
+    res.status(500).send("cant get notifications");
+  }
+};
+
+export const userEvent = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const User = await getUserDetails(req);
+    const [result] = await conn.query(`
+            SELECT
+            e.title, 
+            e.description,
+            e.event_link,
+            CONVERT_TZ(e.scheduled_at, '+00:00', '+05:30') as scheduled_at,
+            CONVERT_TZ(e.ends_at, '+00:00', '+05:30') as ends_at,
+            u.full_name AS created_by_name
+            FROM 
+            events e
+            JOIN 
+            users u ON e.created_by = u.id
+            AND e.dept =? AND e.semester = ? AND e.id = ?;`, [User.dept, User.semester, id]);
+    if (result.length === 0) {
+      return res.status(404).send("Event not found");
+    }
+
+    res.status(200).send(result);
+  } catch (error) {
+    console.error("error: ", error);
+    res.status(500).send("cant get event");
   }
 };

@@ -1,11 +1,14 @@
 import express from "express";
 
 import {
-    viewDashboard
+    viewDashboard,
+    userDashboard
 } from "../controllers/dashboardController.js"
+import { verify } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.get('/',viewDashboard)
+router.get('/admin',verify, viewDashboard)
+router.get('/user',verify, userDashboard)
 
 export default router;

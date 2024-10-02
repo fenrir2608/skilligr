@@ -169,8 +169,7 @@ export const getNotificationsUser = async (req, res) => {
   try {
     const User = await getUserDetails(req);
     const [result] = await conn.query(`
-      SELECT 
-      n.id,
+      SELECT
       n.description, 
       n.label,
       u.full_name AS created_by
@@ -178,7 +177,7 @@ export const getNotificationsUser = async (req, res) => {
       notifications n
       JOIN 
       users u ON n.created_by = u.id 
-      AND n.dept =? AND n.semester = ? AND n.id;`, [User.dept, User.semester]);
+      AND n.dept =? AND n.semester = ?;`, [User.dept, User.semester]);
 
     if (result.length === 0) {
       return res.status(404).send("No Notifications.");
