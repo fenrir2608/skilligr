@@ -40,6 +40,8 @@ export const viewAllNotification = async (req, res) => {
         n.id,
         n.description, 
         n.label,
+        n.dept,
+        n.semester,
         u.full_name AS created_by
         FROM 
         notifications n
@@ -65,6 +67,8 @@ export const viewNotification = async (req, res) => {
         SELECT 
         n.description, 
         n.label,
+        n.dept,
+        n.semester,
         u.full_name AS created_by
         FROM 
         notifications n
@@ -161,10 +165,9 @@ export const updateNotification = async (req, res) => {
     }
 };
 
-export const getNotificationUser = async (req, res) => {
+export const getNotificationsUser = async (req, res) => {
   try {
     const User = await getUserDetails(req);
-    console.log(User);
     const [result] = await conn.query(`
       SELECT 
       n.id,
@@ -175,7 +178,7 @@ export const getNotificationUser = async (req, res) => {
       notifications n
       JOIN 
       users u ON n.created_by = u.id 
-      AND n.dept ='?' AND n.semester = '?';`, [User.dept, User.semester]);
+      AND n.dept =? AND n.semester = ? AND n.id;`, [User.dept, User.semester]);
 
     if (result.length === 0) {
       return res.status(404).send("No Notifications.");
@@ -185,5 +188,31 @@ export const getNotificationUser = async (req, res) => {
   } catch (error) {
     console.error("error: ", error);
     res.status(500).send("Can't get notifications!");
+  }
+}
+
+export const getNotificationUser = async (req, res) => {
+  try {
+    const nid = req.params.id;
+    const User = await getUserDetails(req);
+    const [result] = await conn.query(`
+      SELECT
+      n.description, 
+      n.label,
+      u.full_name AS created_by
+      FROM 
+      notifications n
+      JOIN 
+      users u ON n.created_by = u.id 
+      AND n.dept =? AND n.semester = ? AND n.id = ?;`, [User.dept, User.semester, nid]);
+
+    if (result.length === 0) {
+      return res.status(404).send("Notification not found.");
+    }
+
+    res.status(200).send(result);
+  } catch (error) {
+    console.error("error: ", error);
+    res.status(500).send("Can't get notification!");
   }
 }

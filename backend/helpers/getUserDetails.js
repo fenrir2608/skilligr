@@ -8,7 +8,15 @@ export async function getUserDetails(req) {
         const token = req.cookies.token;
         const decoded = jwt.verify(token, process.env.TOKEN_KEY);
         const user = await conn.query(
-            `SELECT id,username,email,full_name,contact_no,profile_img,isDeleted,role FROM users WHERE email = ?`,
+            `SELECT 
+            u.username, u.email, u.full_name, u.contact_no, u.profile_img, u.isDeleted, u.role,
+            ud.status, ud.roll_no, ud.dept, ud.semester, ud.learning_paths, ud.applied_jobs
+            FROM 
+            users u
+            JOIN 
+            user_details ud ON u.id = ud.user_id
+            WHERE 
+            u.email = ?`,
             [decoded.id]
         );
         return user[0][0];
