@@ -3,21 +3,22 @@ import {
     createResource,
     viewAllResource,
     viewResource,
-    deleteResource
+    deleteResource,
+    userResources,
+    userResource
 } from '../controllers/learningResourcesController.js';
+import { verifyAdmin, verify } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-// Route to create a resource
-router.post('/create', createResource);
+// User Routes
+router.get('/getAll',verify, userResources);
+router.get('/get/:id',verify, userResource);
 
-// Route to view all resources
-router.get('/viewAll', viewAllResource);
-
-// Route to view a specific resource by ID
-router.get('/view/:id', viewResource);
-
-// Route to delete a resource by ID
-router.delete('/delete/:id', deleteResource);
+// Admin Routes
+router.post('/create',verifyAdmin, createResource);
+router.get('/viewAll',verifyAdmin, viewAllResource);
+router.get('/view/:id',verifyAdmin, viewResource);
+router.delete('/delete/:id',verifyAdmin, deleteResource);
 
 export default router;

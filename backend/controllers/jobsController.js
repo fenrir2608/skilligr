@@ -1,5 +1,6 @@
 import conn from "../helpers/connection.js"
 import { getCreatedById } from "../helpers/getCreatedById.js";
+import { getUserDetails } from "../helpers/getUserDetails.js";
 
 export const createJob = async (req, res) => {
     try {
@@ -44,12 +45,13 @@ export const createJob = async (req, res) => {
 export const viewAllJob = async (req, res) => {
     try {
         const [result] = await conn.query(`
-            SELECT 
-            j.id,
+            SELECT
             j.job_title,
             j.company_name,
             j.company_profile,
             j.description,
+            j.dept,
+            j.semester,
             j.registration_link,
             CONVERT_TZ(j.deadline, '+00:00', '+05:30') as deadline,
             u.full_name AS created_by
@@ -74,12 +76,13 @@ export const viewJob = async (req, res) => {
         const { id } = req.params;
 
         const [result] = await conn.query(`
-            SELECT 
-            j.id,
+            SELECT
             j.job_title,
             j.company_name,
             j.company_profile,
             j.description,
+            j.dept,
+            j.semester,
             j.registration_link,
             CONVERT_TZ(j.deadline, '+00:00', '+05:30') as deadline,
             u.full_name AS created_by
@@ -179,4 +182,63 @@ export const deleteJob = async (req, res) => {
     console.error('Error deleting Job posting:', error);
     res.status(500).send('Can not delete job posting');
   }
+};
+
+export const userJobs = async (req, res) => {
+  try {
+      const User = await getUserDetails(req);
+      const [result] = await conn.query(`
+          SELECT 
+          j.job_title,
+          j.company_name,
+          j.company_profile,
+          j.description,
+          j.registration_link,
+          CONVERT_TZ(j.deadline, '+00:00', '+05:30') as deadline,
+          u.full_name AS created_by
+          FROM 
+          jobs j
+          JOIN 
+          users u ON j.created_by = u.id
+          AND j.dept =? AND j.semester = ?;`, [User.dept, User.semester]);
+  
+      if (result.length === 0) {
+        return res.status(404).send("No Jobs posted.");
+      }
+  
+      res.status(200).send(result);
+    } catch (error) {
+      console.error("error: ", error);
+      res.status(500).send("Can't retrieve jobs!");
+    }
+};
+
+export const userJob = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const User = await getUserDetails(req);
+      const [result] = await conn.query(`
+          SELECT
+          j.job_title,
+          j.company_name,
+          j.company_profile,
+          j.description,
+          j.registration_link,
+          CONVERT_TZ(j.deadline, '+00:00', '+05:30') as deadline,
+          u.full_name AS created_by
+          FROM 
+          jobs j
+          JOIN 
+          users u ON j.created_by = u.id
+          AND j.dept =? AND j.semester = ? AND j.id = ?;`, [User.dept, User.semester, id]);
+  
+      if (result.length === 0) {
+        return res.status(404).send("Job not found.");
+      }
+  
+      res.status(200).send(result);
+    } catch (error) {
+      console.error("error: ", error);
+      res.status(500).send("Can't retrieve job!");
+    }
 };
