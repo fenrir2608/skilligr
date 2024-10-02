@@ -4,24 +4,23 @@ import {
     viewAllJob,
     viewJob,
     updateJob,
-    deleteJob
+    deleteJob,
+    userJob,
+    userJobs
 } from '../controllers/jobsController.js';
+import { verify, verifyAdmin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-// Route to create a job
-router.post('/create', createJob);
+//User Routes
+router.get('/getAll', verify, userJobs);
+router.get('/get/:id', verify, userJob);
 
-// Route to view all jobs
-router.get('/viewAll', viewAllJob);
-
-// Route to view a specific job by ID
-router.get('/view/:id', viewJob);
-
-// Route to update a job by ID
-router.put('/update/:id', updateJob);
-
-// Route to delete a job by ID
-router.delete('/delete/:id', deleteJob);
+//Admin Routes
+router.post('/create',verifyAdmin, createJob);
+router.get('/viewAll',verifyAdmin, viewAllJob);
+router.get('/view/:id',verifyAdmin, viewJob);
+router.put('/update/:id',verifyAdmin, updateJob);
+router.delete('/delete/:id',verifyAdmin, deleteJob);
 
 export default router;
