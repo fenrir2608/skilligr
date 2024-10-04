@@ -9,6 +9,7 @@ import notificationRoute from "./routes/notificationRoute.js"
 import dashboardRoute from "./routes/dashboardRoute.js";
 import careerClarityRoute from "./routes/careerClarityRoute.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -23,7 +24,7 @@ if(conn){
 else{
   console.log("An error occured.")
 }
-
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use("/user", userRoute);
