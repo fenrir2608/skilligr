@@ -3,6 +3,7 @@ import { createSecretToken } from "../helpers/secretToken.js";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
 dotenv.config();
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 export const login = async (req, res) => {
@@ -50,7 +51,7 @@ export const login = async (req, res) => {
     const token = createSecretToken(user.email);
     res.cookie("token", token, {
       withCredentials: true,
-      httpOnly: true,
+      httpOnly: false,
     });
     return res.status(200).json({
       success: true,
@@ -99,7 +100,7 @@ export const signup = async (req, res) => {
     const token = createSecretToken(email);
     res.cookie("token", token, {
       withCredentials: true,
-      httpOnly: true,
+      httpOnly: false,
     });
     return res.status(201).json({
       success: true,
@@ -169,7 +170,7 @@ export const reset = async (req, res) => {
       subject: "Password Reset | Skilligr",
       text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
       Please click on the following link, or paste this into your browser to complete the process:\n\n
-      http://${CLIENT_URL}/reset/${resetToken}\n\n
+      ${CLIENT_URL}/update/?tk=${resetToken}\n\n
       If you did not request this, please ignore this email and your password will remain unchanged.\n`,
     };
 
@@ -179,7 +180,7 @@ export const reset = async (req, res) => {
         return res.status(500).json({ message: "Error sending email" });
       }
     });
-
+    res.clearCookie("token");
     return res.status(200).json({
       success: true,
       message: "Password reset email sent.",
@@ -218,7 +219,7 @@ export const update = async (req, res) => {
       `UPDATE users SET password = ?, reset_password_token = NULL, reset_password_token_expires = NULL WHERE id = ?`,
       [hashedPassword, user.id]
     );
-
+    res.clearCookie("token");
     return res.status(200).json({
       success: true,
       message: "Password updated successfully.",
@@ -346,41 +347,41 @@ export const activateUser = async (req, res) => {
   }
 };
 
-// export const verify = async (req, res) => {
-//   try {
-//     const token = req.cookies.token;
+export const verifyCookie = async (req, res) => {
+  try {
+    const { token } = req.body;
 
-//     if (!token) {
-//       return res.status(401).json({
-//         success: false,
-//         message: "No token provided. Please sign in.",
-//       });
-//     }
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "No token provided. Please sign in.",
+      });
+    }
 
-//     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
+    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
 
-//     const result = await conn.query(
-//       `SELECT full_name FROM users WHERE email = ?`,
-//       [decoded.id]
-//     );
+    const result = await conn.query(
+      `SELECT full_name FROM users WHERE email = ?`,
+      [decoded.id]
+    );
 
-//     if (result[0].length === 0) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "User not found.",
-//       });
-//     }
+    if (result[0].length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
 
-//     return res.status(200).json({
-//       success: true,
-//       message: "User verified successfully.",
-//       full_name: result[0][0].full_name,
-//     });
-//   } catch (err) {
-//     return res.status(500).json({
-//       success: false,
-//       message: "Failed to verify token.",
-//       error: err.message,
-//     });
-//   }
-// };
+    return res.status(200).json({
+      success: true,
+      message: "User verified successfully.",
+      full_name: result[0][0].full_name,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to verify token.",
+      error: err.message,
+    });
+  }
+};

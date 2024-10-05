@@ -17,6 +17,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -25,7 +26,7 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include", 
+        credentials: "include",
         body: JSON.stringify({
           username: username,
           password,
@@ -33,11 +34,8 @@ const Login = () => {
       });
       const data = await response.json();
       if (data.success) {
-        alert(data.message);
-        //navigate("/landing");
+        navigate("/");
       } else {
-        // Handle error
-        alert(data.message);
         console.error("Login failed");
       }
     } catch (error) {
@@ -61,10 +59,12 @@ const Login = () => {
                 <div className="grid gap-2">
                   <Label htmlFor="username">Username</Label>
                   <Input
+                    tabIndex="1"
                     id="username"
                     type="text"
                     placeholder="Your username"
                     required
+                    autoComplete="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
@@ -72,19 +72,22 @@ const Login = () => {
                 <div className="grid gap-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="password">Password</Label>
-                    <Link to="/forgot-password" className="text-sm text-blue-500 hover:underline">
-                      &nbsp;&nbsp;&nbsp;Forgot password?
+                    <Link to="/reset" className="text-sm text-blue-500 hover:underline">
+                      Forgot password?
                     </Link>
                   </div>
                   <Input
+                    tabIndex="2"
                     id="password"
                     type="password"
+                    placeholder="Your password"
+                    autoComplete="current-password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button tabIndex="3" type="submit" className="w-full">
                   Login
                 </Button>
               </div>

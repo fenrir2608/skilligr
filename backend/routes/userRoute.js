@@ -9,6 +9,7 @@ import {
   updateUser,
   removeUser,
   activateUser,
+  verifyCookie,
 } from "../controllers/userController.js";
 import { verifyAdmin } from "../middlewares/authMiddleware.js";
 
@@ -20,6 +21,7 @@ router.post("/signup", signup);
 router.get("/logout", logout);
 router.post("/reset", reset);
 router.put("/reset", update);
+router.post("/verifyCookie",verifyCookie);
 
 //Protected Routes
 router.put("/admin/activate", activateUser);

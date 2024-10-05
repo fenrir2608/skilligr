@@ -17,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Signup() {
@@ -59,134 +58,135 @@ export default function Signup() {
       console.error("Error during signup:", error);
     }
   };
-
-return (
+  return (
     <GridBackground>
-        <div className="flex min-h-screen items-center justify-center p-4">
-            <Card className="w-full max-w-lg">
-                <CardHeader>
-                    <CardTitle className="text-xl">Sign Up</CardTitle>
-                    <CardDescription>
-                        Enter your information to create an account
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <form onSubmit={handleSignup}>
-                        <div className="grid gap-4">
-                            <div className="grid grid-cols-1 gap-2">
-                                <Label htmlFor="username">Username</Label>
-                                <Input
-                                    id="username"
-                                    placeholder="omsankpal"
-                                    required
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                />
-                            </div>
-                            <div className="grid grid-cols-1 gap-2">
-                                <Label htmlFor="password">Password</Label>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </div>
-                            <div className="grid grid-cols-1 gap-2">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="omsankpal@gmail.com"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            {/* First Name and Last Name in the same row */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="grid gap-2">
-                                    <Label htmlFor="first-name">First Name</Label>
-                                    <Input
-                                        id="first-name"
-                                        placeholder="Om"
-                                        required
-                                        value={firstName}
-                                        onChange={(e) => setFirstName(e.target.value)}
-                                    />
-                                </div>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="last-name">Last Name</Label>
-                                    <Input
-                                        id="last-name"
-                                        placeholder="Sankpal"
-                                        required
-                                        value={lastName}
-                                        onChange={(e) => setLastName(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-1 gap-2">
-                                <Label htmlFor="contact-no">Contact No</Label>
-                                <Input
-                                    id="contact-no"
-                                    placeholder="9875269645"
-                                    required
-                                    value={contactNo}
-                                    onChange={(e) => setContactNo(e.target.value)}
-                                />
-                            </div>
-                            {/* Roll No and Department in the same row */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="grid gap-2">
-                                    <Label htmlFor="roll-no">Roll No</Label>
-                                    <Input
-                                        id="roll-no"
-                                        placeholder="21ME089"
-                                        required
-                                        value={rollNo}
-                                        onChange={(e) => setRollNo(e.target.value)}
-                                    />
-                                </div>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="dept">Department</Label>
-                                    <Select onValueChange={(value) => setDept(value)}>
-                                        <SelectTrigger className="">
-                                            <SelectValue placeholder="Choose a department" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="computer-science">Computer Science</SelectItem>
-                                            <SelectItem value="mechanical">Mechanical</SelectItem>
-                                            <SelectItem value="electrical">Electrical</SelectItem>
-                                            <SelectItem value="civil">Civil</SelectItem>
-                                            <SelectItem value="chemical">Chemical</SelectItem>
-                                            <SelectItem value="biomedical">Biomedical</SelectItem>
-                                            <SelectItem value="aerospace">Aerospace</SelectItem>
-                                            <SelectItem value="environmental">Environmental</SelectItem>
-                                            <SelectItem value="industrial">Industrial</SelectItem>
-                                            <SelectItem value="materials">Materials</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-                            <Button type="submit" className="w-full">
-                                Create an account
-                            </Button>
-                        </div>
-                    </form>
-                    <Button variant="outline" className="w-full mt-4">
-                        Sign up with GitHub
-                    </Button>
-                    <div className="mt-4 text-center text-sm">
-                        Already have an account?{" "}
-                        <Link to="/login" className="text-blue-500 hover:underline">
-                            Login
-                        </Link>
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
+      <div className="flex min-h-screen items-center justify-center p-4">
+        <Card className="w-full max-w-lg">
+          <CardHeader>
+            <CardTitle className="text-xl">Sign Up</CardTitle>
+            <CardDescription>
+              Enter your information to create an account
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSignup}>
+              <div className="grid gap-4">
+                <div className="grid grid-cols-1 gap-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input
+                    id="username"
+                    placeholder="Your username"
+                    required
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Your password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="grid grid-cols-1 gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Your email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                {/* First Name and Last Name in the same row */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="first-name">First Name</Label>
+                    <Input
+                      id="first-name"
+                      placeholder="Your first name"
+                      required
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="last-name">Last Name</Label>
+                    <Input
+                      id="last-name"
+                      placeholder="Your last name"
+                      required
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 gap-2">
+                  <Label htmlFor="contact-no">Contact No</Label>
+                  <Input
+                    id="contact-no"
+                    placeholder="Your contact number"
+                    required
+                    value={contactNo}
+                    onChange={(e) => setContactNo(e.target.value)}
+                  />
+                </div>
+                {/* Roll No and Department in the same row */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="roll-no">Roll No</Label>
+                    <Input
+                      id="roll-no"
+                      placeholder="Your roll number"
+                      required
+                      value={rollNo}
+                      onChange={(e) => setRollNo(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="dept">Department</Label>
+                    <Select required onValueChange={(value) => setDept(value)}>
+                      <SelectTrigger className="">
+                        <SelectValue placeholder="Choose a department" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="computer-science">
+                          Computer Science
+                        </SelectItem>
+                        <SelectItem value="mechanical">Mechanical</SelectItem>
+                        <SelectItem value="electrical">Electrical</SelectItem>
+                        <SelectItem value="civil">Civil</SelectItem>
+                        <SelectItem value="chemical">Chemical</SelectItem>
+                        <SelectItem value="biomedical">Biomedical</SelectItem>
+                        <SelectItem value="aerospace">Aerospace</SelectItem>
+                        <SelectItem value="environmental">
+                          Environmental
+                        </SelectItem>
+                        <SelectItem value="industrial">Industrial</SelectItem>
+                        <SelectItem value="materials">Materials</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <Button type="submit" className="w-full">
+                  Create an account
+                </Button>
+              </div>
+            </form>
+            <div className="mt-4 text-center text-sm">
+              Already have an account?{" "}
+              <Link to="/login" className="text-blue-500 hover:underline">
+                Login
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </GridBackground>
-);
+  );
 }
