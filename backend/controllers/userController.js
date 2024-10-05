@@ -12,7 +12,15 @@ export const login = async (req, res) => {
       `SELECT * FROM users WHERE username = ?`,
       [username]
     );
+    const tk = req.cookies.token;
 
+    if (tk) {
+      return res.status(400).json({
+      success: false,
+      message: "Already logged in",
+      });
+    }
+    
     if (result[0].length === 0) {
       return res.status(400).json({
         success: false,
