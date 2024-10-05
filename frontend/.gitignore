@@ -1,0 +1,25 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+misc
+backend/.env
+.env
+
+# React
+build/
+dist/
+
+# MongoDB
+data/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Dependency lock files
+package-lock.json
+yarn.lock
