@@ -18,6 +18,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/auth";
+import Spinner from "../components/Spinner";
 
 export default function Signup() {
   const [username, setUsername] = useState("");
@@ -29,6 +31,8 @@ export default function Signup() {
   const [dept, setDept] = useState("");
   const [rollNo, setRollNo] = useState("");
   const navigate = useNavigate();
+  const {authStatus,loading} = useAuth();
+  if (loading) return Spinner;
 
   const handleSignup = async (e) => {
     e.preventDefault();

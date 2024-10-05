@@ -11,12 +11,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/auth";
+import Spinner from "../components/Spinner";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  const {authStatus,loading} = useAuth();
+  if (loading) return Spinner;
 
   const handleLogin = async (e) => {
     e.preventDefault();

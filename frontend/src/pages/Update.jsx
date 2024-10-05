@@ -11,11 +11,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
+import { useAuth } from "../hooks/auth";
 
 const UpdatePassword = () => {
   const [NewPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
-
+  const { authStatus, loading } = useAuth();
+  if (loading) return Spinner;
   const queryParams = new URLSearchParams(window.location.search);
   const token = queryParams.get("tk");
 

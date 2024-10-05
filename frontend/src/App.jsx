@@ -11,7 +11,7 @@ import { useAuth } from "./hooks/auth";
 import Spinner from "./components/Spinner";
 
 function App() {
-  const { authStatus, loading } = useAuth(["/signup","/login","/reset","/update"], true); 
+ const { authStatus, loading } = useAuth(["/signup","/login","/reset","/update"], true); 
 
   return (
     <>
