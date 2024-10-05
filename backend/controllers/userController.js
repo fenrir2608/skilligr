@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 dotenv.config();
-
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -20,7 +20,7 @@ export const login = async (req, res) => {
       message: "Already logged in",
       });
     }
-    
+
     if (result[0].length === 0) {
       return res.status(400).json({
         success: false,
@@ -169,7 +169,7 @@ export const reset = async (req, res) => {
       subject: "Password Reset | Skilligr",
       text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
       Please click on the following link, or paste this into your browser to complete the process:\n\n
-      http://${req.headers.host}/reset/${resetToken}\n\n
+      http://${CLIENT_URL}/reset/${resetToken}\n\n
       If you did not request this, please ignore this email and your password will remain unchanged.\n`,
     };
 
