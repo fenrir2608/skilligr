@@ -53,8 +53,9 @@ export default function Signup() {
           roll_no: rollNo,
         }),
       });
-      if (response.ok) {
-        navigate("/landing");
+      const data = await response.json();
+      if (data.success) {
+        navigate("/");
       } else {
         console.error("Signup failed");
       }
