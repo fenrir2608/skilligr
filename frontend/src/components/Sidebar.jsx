@@ -27,8 +27,10 @@ const Sidebar = ({ isOpen, onClose }) => {
       } md:translate-x-0 md:static`}
     >
       <div className="flex items-center mb-8">
-        <SkilligrIcon className="w-2 h-2 mr-4" />
-        <h1 className="text-xl font-bold ml-3">Skilligr</h1>
+        <Link to="/" className="flex items-center">
+          <SkilligrIcon className="w-2 h-2 mr-4" />
+          <h1 className="text-xl font-bold ml-3">Skilligr</h1>
+        </Link>
       </div>
       <nav className="space-y-2">
         <Link
