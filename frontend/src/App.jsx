@@ -15,6 +15,10 @@ import GrammarTools from "./pages/user/softSkillsHub/GrammarTools";
 import Feedback from "./pages/user/Feedback";
 import { useAuth } from "./hooks/auth";
 import Spinner from "./components/Spinner";
+import JobPosts from "./pages/user/jobs/JobPosts";
+import JobDetail from "./pages/user/jobs/JobDetail";
+import EventPosts from "./pages/user/events/EventPosts";
+import EventDetail from "./pages/user/events/EventDetail";
 
 function App() {
  const { authStatus, loading } = useAuth(["/signup","/login","/reset","/update"], true); 
@@ -38,6 +42,10 @@ function App() {
           <Route path="/softskills/pronounciation" element={<PronounciationTests />} />
           <Route path="/softskills/grammar" element={<GrammarTools />} />
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="jobs" element = {<JobPosts />} />
+          <Route path="jobs/detail" element = {<JobDetail />} />
+          <Route path="events" element = {<EventPosts />} />
+          <Route path="events/detail" element = {<EventDetail />} />
         </Routes>
       )}
     </>
