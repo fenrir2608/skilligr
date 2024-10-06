@@ -19,7 +19,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const {authStatus,loading} = useAuth();
-  if (loading) return Spinner;
+  if (loading) return <Spinner/>;
 
   const handleLogin = async (e) => {
     e.preventDefault();

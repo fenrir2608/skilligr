@@ -18,7 +18,7 @@ const UpdatePassword = () => {
   const [NewPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
   const { authStatus, loading } = useAuth();
-  if (loading) return Spinner;
+  if (loading) return <Spinner/>;
   const queryParams = new URLSearchParams(window.location.search);
   const token = queryParams.get("tk");
 

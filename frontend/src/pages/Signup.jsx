@@ -32,7 +32,7 @@ export default function Signup() {
   const [rollNo, setRollNo] = useState("");
   const navigate = useNavigate();
   const {authStatus,loading} = useAuth();
-  if (loading) return Spinner;
+  if (loading) return <Spinner/>;
 
   const handleSignup = async (e) => {
     e.preventDefault();
