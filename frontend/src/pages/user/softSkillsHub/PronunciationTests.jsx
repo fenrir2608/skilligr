@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight,CalendarDays,Mic } from  "lucide-react";
 
-export default function PronounciationTests() {
+export default function PronunciationTests() {
   return (
     <div className="w-full max-w-3xl mx-auto py-12 md:py-16 lg:py-20">
       <div className="space-y-6">
