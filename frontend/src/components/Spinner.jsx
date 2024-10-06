@@ -1,9 +1,8 @@
 import React from "react";
-import GridBackground from "./ui/grid";
 
 const Spinner = () => {
     return (
-        <GridBackground>
+
             <div
                 role="status"
                 className="flex items-center justify-center min-h-screen"
@@ -26,7 +25,7 @@ const Spinner = () => {
                 </svg>
                 <span className="sr-only">Loading...</span>
             </div>
-        </GridBackground>
+
     );
 };
 

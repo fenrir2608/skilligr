@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import GridBackground from "../components/ui/grid";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -47,7 +46,6 @@ const ForgotPassword = () => {
   };
 
   return (
-    <GridBackground>
       <div className="flex min-h-screen items-center justify-center p-4">
         <Card className="w-auto max-w-sm">
           <CardHeader>
@@ -85,7 +83,6 @@ const ForgotPassword = () => {
           </CardContent>
         </Card>
       </div>
-    </GridBackground>
   );
 };
 

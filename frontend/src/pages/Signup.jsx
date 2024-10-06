@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import GridBackground from "../components/ui/grid";
 import {
   Select,
   SelectContent,
@@ -67,7 +66,6 @@ export default function Signup() {
     }
   };
   return (
-    <GridBackground>
       <div className="flex min-h-screen items-center justify-center p-4">
         <Card className="w-full max-w-lg">
           <CardHeader>
@@ -214,6 +212,5 @@ export default function Signup() {
           </CardContent>
         </Card>
       </div>
-    </GridBackground>
   );
 }
