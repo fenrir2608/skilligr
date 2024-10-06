@@ -10,7 +10,7 @@ import UpdatePassword from "./pages/Update";
 import LearningResources from "./pages/user/learningResources/ULearningResources";
 import UNotifications from "./pages/user/Notifications/UNotifications";
 import UNotificationDetails from "./pages/user/Notifications/UNotificationDetails";
-import PronunciationTests from "./pages/user/softSkillsHub/PrononciationTests";
+import PronunciationTests from "./pages/user/softSkillsHub/PronunciationTests";
 import GrammarTools from "./pages/user/softSkillsHub/GrammarTools";
 import Feedback from "./pages/user/Feedback";
 import { useAuth } from "./hooks/auth";
