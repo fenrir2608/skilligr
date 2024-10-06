@@ -70,7 +70,7 @@ export default function EventPosts() {
     },
   ]
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="flex-1">
         <Header onMenuClick={toggleSidebar} />

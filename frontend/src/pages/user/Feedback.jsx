@@ -18,7 +18,7 @@ export default function Feedback() {
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="flex-1 flex flex-col">
         <Header onMenuClick={toggleSidebar} />
