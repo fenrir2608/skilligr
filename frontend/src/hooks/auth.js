@@ -20,7 +20,7 @@ export const useAuth = (whitelist = [], isProtected = false) => {
     }
 
     if (token) {
-      navigate("/");
+      //navigate("/");
       setLoading(false);
       return;
     }

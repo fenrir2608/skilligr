@@ -15,7 +15,6 @@ import { useAuth } from "../hooks/auth";
 import Spinner from "../components/Spinner";
 
 
-
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
