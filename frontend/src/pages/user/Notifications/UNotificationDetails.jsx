@@ -26,7 +26,7 @@ export default function UNotificationDetails() {
               <p className="text-sm text-muted-foreground">Notification Label: New Feature Release</p>
             </div>
             <Link
-              to="#"
+              to="/notifications"
               className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-primary-foreground/20 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary-foreground"
               prefetch={false}
             >
