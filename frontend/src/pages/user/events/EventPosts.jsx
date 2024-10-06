@@ -81,7 +81,7 @@ export default function EventPosts() {
               {events.map((event) => (
                 <Link
                   key={event.id}
-                  href="#"
+                  to="#"
                   className="group relative block overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
                   prefetch={false}
                 >
