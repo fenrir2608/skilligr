@@ -24,7 +24,7 @@ export default function JobPosts() {
             <Link
               to="#"
               className="bg-background shadow-md rounded-lg overflow-hidden block w-full max-w-[400px] transition-all hover:scale-[1.02] focus:scale-[1.02]"
-              prefetch={false}
+              
             >
               <CardHeader className="bg-muted p-6">
                 <h2 className="text-xl font-bold">Software Engineer</h2>
@@ -43,7 +43,7 @@ export default function JobPosts() {
             <Link
               to="#"
               className="bg-background shadow-md rounded-lg overflow-hidden block w-full max-w-[400px] transition-all hover:scale-[1.02] focus:scale-[1.02]"
-              prefetch={false}
+              
             >
               <CardHeader className="bg-muted p-6">
                 <h2 className="text-xl font-bold">Frontend Dev</h2>
@@ -62,7 +62,7 @@ export default function JobPosts() {
             <Link
               to="#"
               className="bg-background shadow-md rounded-lg overflow-hidden block w-full max-w-[400px] transition-all hover:scale-[1.02] focus:scale-[1.02]"
-              prefetch={false}
+              
             >
               <CardHeader className="bg-muted p-6">
                 <h2 className="text-xl font-bold">DevOps</h2>

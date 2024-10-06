@@ -83,7 +83,7 @@ export default function EventPosts() {
                   key={event.id}
                   to="#"
                   className="group relative block overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-                  prefetch={false}
+                  
                 >
                   <div className="absolute inset-0 z-10">
                     <span className="sr-only">View event details</span>
