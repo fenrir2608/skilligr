@@ -69,7 +69,7 @@ export const login = async (req, res) => {
 
 export const signup = async (req, res) => {
   try {
-    const { username, password, email, full_name, contact_no, dept, roll_no } =
+    const { username, password, email, full_name, contact_no, dept, semester, roll_no } =
       req.body;
 
     const existingUser = await conn.query(
@@ -93,8 +93,8 @@ export const signup = async (req, res) => {
     const userId = userResult[0].insertId;
 
     await conn.query(
-      `INSERT INTO user_details (user_id, status, roll_no, dept, learning_paths, applied_jobs, is_deleted) VALUES (?, 0, ?, ?, '', '', 0)`,
-      [userId, roll_no, dept]
+      `INSERT INTO user_details (user_id, status, roll_no, dept, semester, learning_paths, applied_jobs, is_deleted) VALUES (?, 0, ?, ?, ?, '', '', 0)`,
+      [userId, roll_no, dept, semester]
     );
 
     const token = createSecretToken(email);
