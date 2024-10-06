@@ -10,6 +10,10 @@ import UpdatePassword from "./pages/Update";
 import LearningResources from "./pages/user/LearningResources";
 import { useAuth } from "./hooks/auth";
 import Spinner from "./components/Spinner";
+import JobPosts from "./pages/user/jobs/JobPosts";
+import JobDetail from "./pages/user/jobs/JobDetail";
+import EventPosts from "./pages/user/events/EventPosts";
+import EventDetail from "./pages/user/events/EventDetail";
 
 function App() {
  const { authStatus, loading } = useAuth(["/signup","/login","/reset","/update"], true); 
@@ -28,6 +32,10 @@ function App() {
           <Route path="/user" element={<UDashboard />} />
           <Route path="/" element={<Landing />} />
           <Route path="/resources" element={<LearningResources />} />
+          <Route path="jobs" element = {<JobPosts />} />
+          <Route path="jobs/detail" element = {<JobDetail />} />
+          <Route path="events" element = {<EventPosts />} />
+          <Route path="events/detail" element = {<EventDetail />} />
         </Routes>
       )}
     </>
