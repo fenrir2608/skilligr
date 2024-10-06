@@ -1,7 +1,18 @@
-import {Link} from "react-router-dom"
 import { ArrowRight } from  "lucide-react"
+import {Link} from "react-router-dom"
+import { useState } from "react";
+import { useAuth } from "../../../hooks/auth";
+import Spinner from "../../../components/Spinner";
+import Sidebar from "../../../components/Sidebar";
+import Header from "../../../components/Header";
 
 export default function EventPosts() {
+  const { authStatus, loading } = useAuth();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  if (loading) return <Spinner />;
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   const events = [
     {
       id: 1,
@@ -59,35 +70,41 @@ export default function EventPosts() {
     },
   ]
   return (
-    <section className="py-12 md:py-16 lg:py-20">
-      <div className="container px-4 md:px-6">
-        <h2 className="mb-8 text-2xl font-bold md:text-3xl lg:text-4xl">Upcoming Events</h2>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {events.map((event) => (
-            <Link
-              key={event.id}
-              href="#"
-              className="group relative block overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-              prefetch={false}
-            >
-              <div className="absolute inset-0 z-10">
-                <span className="sr-only">View event details</span>
-              </div>
-              <div className="bg-background p-4">
-                <h3 className="mb-2 text-lg font-bold">{event.title}</h3>
-                <p className="mb-4 text-sm text-muted-foreground">{event.description}</p>
-                <div className="flex items-center justify-between">
-                  <span className="rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
-                    {event.type}
-                  </span>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:translate-x-1" />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+    <div className="flex">
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <div className="flex-1">
+        <Header onMenuClick={toggleSidebar} />
+        <section className="py-12 md:py-16 lg:py-20">
+          <div className="container px-4 md:px-6">
+            <h2 className="mb-8 text-2xl font-bold md:text-3xl lg:text-4xl">Upcoming Events</h2>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {events.map((event) => (
+                <Link
+                  key={event.id}
+                  href="#"
+                  className="group relative block overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                  prefetch={false}
+                >
+                  <div className="absolute inset-0 z-10">
+                    <span className="sr-only">View event details</span>
+                  </div>
+                  <div className="bg-background p-4">
+                    <h3 className="mb-2 text-lg font-bold">{event.title}</h3>
+                    <p className="mb-4 text-sm text-muted-foreground">{event.description}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
+                        {event.type}
+                      </span>
+                      <ArrowRight className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
   )
 }
 
