@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export const useAuth = (whitelist = [], isProtected = false) => {
+export const useAuth = (publicRoutes = [], restrictedRoutes = []) => {
   const [authStatus, setAuthStatus] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -14,23 +14,27 @@ export const useAuth = (whitelist = [], isProtected = false) => {
       .find((row) => row.startsWith("token="))
       ?.split("=")[1];
 
-    if (whitelist.includes(currentPath)) {
+    // If the route is public, allow access
+    if (publicRoutes.includes(currentPath)) {
       setLoading(false);
       return;
     }
 
-    if (token) {
-      //navigate("/");
+    // If the route is restricted and the user is authenticated, redirect to home
+    if (restrictedRoutes.includes(currentPath) && token) {
+      navigate("/");
       setLoading(false);
       return;
     }
 
-    if (!token && isProtected) {
+    // If the user is not authenticated and the route is not public, redirect to login
+    if (!token && !publicRoutes.includes(currentPath)) {
       navigate("/login");
       setLoading(false);
       return;
     }
 
+    // Verify token for authenticated users
     const verifyToken = async () => {
       try {
         const response = await fetch("http://localhost:3000/user/verifyCookie", {
@@ -49,15 +53,11 @@ export const useAuth = (whitelist = [], isProtected = false) => {
             fullName: data.full_name,
           });
         } else {
-          if (isProtected) {
-            navigate("/login");
-          }
+          navigate("/login");
         }
       } catch (error) {
         console.error("Error verifying token:", error);
-        if (isProtected) {
-          navigate("/login");
-        }
+        navigate("/login");
       } finally {
         setLoading(false);
       }

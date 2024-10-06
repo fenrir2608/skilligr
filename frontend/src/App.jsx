@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import UDashboard from "./pages/user/UDashboard";
 import Dashboard from "./pages/admin/Dashboard";
 import Login from "./pages/Login";
@@ -25,7 +25,10 @@ import AllLearningPaths from "./pages/user/careerClarity/UAllLearningPaths";
 import CareerAssessment from "./pages/user/careerClarity/UCareerAssessment";
 
 function App() {
- const { authStatus, loading } = useAuth(["/signup","/login","/reset","/update"], true); 
+  const { authStatus, loading } = useAuth(
+    ["/login", "/signup"], // Public routes (Accessible to all users, regardless of authentication status.)
+    ["/login", "/signup","/reset","/update"]  // Restricted routes (Authenticated users are prevented from accessing certain routes and redirected to home)
+  );
 
   return (
     <>
@@ -41,15 +44,17 @@ function App() {
           <Route path="/user" element={<UDashboard />} />
           <Route path="/" element={<Landing />} />
           <Route path="/resources" element={<LearningResources />} />
-          <Route path="/notifications" element={<UNotifications />} />
+          <Route path="/notifications" element={
+            authStatus ? <UNotifications /> : <Navigate to="/login" replace />
+          } />
           <Route path="/notifications/details" element={<UNotificationDetails />} />
           <Route path="/softskills/pronunciation" element={<PronunciationTests />} />
           <Route path="/softskills/grammar" element={<GrammarTools />} />
           <Route path="/feedback" element={<Feedback />} />
           <Route path="jobs" element = {<JobPosts />} />
-          <Route path="jobs/detail" element = {<JobDetail />} />
+          <Route path="jobs/details" element = {<JobDetail />} />
           <Route path="events" element = {<EventPosts />} />
-          <Route path="events/detail" element = {<EventDetail />} />
+          <Route path="events/details" element = {<EventDetail />} />
           <Route path="/resources/details" element={<LearningResourcesDetails />} />
           <Route path="/career" element={<CareerClarity />} />
           <Route path="/career/paths" element={<AllLearningPaths />} />

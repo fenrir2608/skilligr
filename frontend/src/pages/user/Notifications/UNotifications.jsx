@@ -1,22 +1,73 @@
-import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuRadioGroup, DropdownMenuRadioItem } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 import { useAuth } from "../../../hooks/auth";
-import { Filter,Search } from "lucide-react";
+import { Filter, Search } from "lucide-react";
 import Sidebar from "../../../components/Sidebar";
 import Header from "../../../components/Header";
-import { useState } from "react"
+import { useState, useEffect } from "react";
 
 export default function UNotifications() {
   const { authStatus, loading } = useAuth();
+  const [notifications, setNotifications] = useState([]);
+  const [noNotificationsMessage, setNoNotificationsMessage] = useState(null);
+  const navigate = useNavigate();  // Use the navigate hook
+
+  useEffect(() => {
+    if (authStatus) {
+      const fetchNotifications = async () => {
+        try {
+          const response = await fetch("http://localhost:3000/notifications/getNotifications", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setNotifications(data); // Assuming this is a valid array of notifications
+          } else if (response.status === 401) {
+            setNoNotificationsMessage("You are not authorized to view notifications.");
+          } else {
+            const text = await response.text();
+            if (text === "No notifications.") {
+              setNoNotificationsMessage("No notifications available.");
+            } else {
+              console.error("Unexpected response:", text);
+            }
+          }
+        } catch (error) {
+          console.error("Failed to fetch notifications", error);
+        }
+      };
+
+      fetchNotifications();
+    }
+  }, [authStatus]);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  if (loading) return <Spinner/>;
+  if (loading) return <Spinner />;
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  // Function to handle card click and navigate to details page
+  const handleCardClick = (id) => {
+    navigate(`/notifications/details/?id=${id}`);
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -53,47 +104,45 @@ export default function UNotifications() {
                 </div>
               </div>
             </section>
+
             <section className="container px-4 md:px-6">
-              <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                <Card>
-                  <CardHeader className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="w-8 h-8">
-                        <AvatarImage src="/placeholder-user.jpg" alt="Admin" />
-                        <AvatarFallback>AD</AvatarFallback>
-                      </Avatar>
-                      <div className="font-medium">Admin</div>
-                    </div>
-                    <Badge variant="secondary" className="text-xs">
-                      Announcement
-                    </Badge>
-                  </CardHeader>
-                  <CardContent>
-                    <p>
-                      We are excited to announce the launch of our new product feature! Check it out and let us know what you
-                      think.
-                    </p>
-                  </CardContent>
-                  <CardFooter className="text-xs text-muted-foreground">2 hours ago</CardFooter>
-                </Card>
-                <Card>
-                  <CardHeader className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="w-8 h-8">
-                        <AvatarImage src="/placeholder-user.jpg" alt="Admin" />
-                        <AvatarFallback>AD</AvatarFallback>
-                      </Avatar>
-                      <div className="font-medium">Admin</div>
-                    </div>
-                    <Badge className="text-xs">Update</Badge>
-                  </CardHeader>
-                  <CardContent>
-                    <p>We have just released a new update to our platform. Check out the changelog for more details.</p>
-                  </CardContent>
-                  <CardFooter className="text-xs text-muted-foreground">1 day ago</CardFooter>
-                </Card>
-                {/* Additional Card components... */}
-              </div>
+              {noNotificationsMessage ? (
+                <div className="text-center text-lg text-muted-foreground">
+                  {noNotificationsMessage}
+                </div>
+              ) : (
+                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                  {notifications.map((notification, index) => (
+                    <Card key={index} onClick={() => handleCardClick(notification.id)} className="cursor-pointer">
+                      <CardHeader className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Avatar className="w-8 h-8">
+                            <AvatarImage src="" alt="Admin" />
+                            <AvatarFallback>
+                              {notification.created_by
+                                ? notification.created_by
+                                    .split(" ")
+                                    .map((name) => name[0])
+                                    .join("")
+                                : "A"}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="font-medium">{notification.created_by || "Admin"}</div>
+                        </div>
+                        <Badge variant="secondary" className="text-xs">
+                          {notification.label || "Announcement"}
+                        </Badge>
+                      </CardHeader>
+                      <CardContent>
+                        <p>{notification.description}</p>
+                      </CardContent>
+                      <CardFooter className="text-xs text-muted-foreground">
+                        {notification.time || "Just now"}
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </section>
           </div>
         </div>
@@ -101,4 +150,3 @@ export default function UNotifications() {
     </div>
   );
 }
-

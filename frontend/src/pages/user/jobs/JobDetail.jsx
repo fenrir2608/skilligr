@@ -1,75 +1,113 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useAuth } from "../../../hooks/auth";
 import Spinner from "../../../components/Spinner";
-import { Link } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar";
 import Header from "../../../components/Header";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function JobDetails() {
   const { authStatus, loading } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [jobDetails, setJobDetails] = useState(null);
+  const [error, setError] = useState(null);
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id = searchParams.get("id"); // Extract job ID from URL
+
+  useEffect(() => {
+    const fetchJobDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/jobs/get/${id}`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setJobDetails(data[0]);
+        } else {
+          setError("Failed to load job details.");
+        }
+      } catch (error) {
+        console.error("Failed to fetch job details", error);
+        setError("An error occurred while fetching job details.");
+      }
+    };
+
+    if (authStatus && id) {
+      fetchJobDetails();
+    }
+  }, [authStatus, id]);
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   if (loading) return <Spinner />;
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
   return (
-    <div className="flex h-screen overflow-hidden">
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      <div className="flex flex-col flex-1 w-full">
-        <Header onMenuClick={toggleSidebar} />
-        <main className="flex-1 overflow-y-auto">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* <div>
-                <img
-                  src="/placeholder.svg"
-                  alt="Job Posting"
-                  width={800}
-                  height={600}
-                  className="w-full h-auto rounded-lg"
-                  style={{ aspectRatio: "800/600", objectFit: "cover" }}
-                />
-              </div> */}
-              <div className="space-y-6">
-                <div>
-                  <h1 className="text-3xl font-bold">Software Engineer</h1>
-                  <p className="text-muted-foreground">San Francisco, CA</p>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold">Job Description</h2>
-                  <p className="text-muted-foreground">
-                    We are seeking a talented and experienced Software Engineer to join our growing team. In this role, you
-                    will be responsible for designing, developing, and maintaining our web applications and services. You will
-                    work closely with our product and design teams to deliver high-quality, user-friendly software.
-                  </p>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold">Requirements</h2>
-                  <ul className="list-disc pl-6 text-muted-foreground">
-                    <li>Bachelor's degree in Computer Science or a related field</li>
-                    <li>
-                      5+ years of experience in software development, with a strong background in JavaScript, React, and
-                      Node.js
-                    </li>
-                    <li>Proficient in writing clean, maintainable, and well-documented code</li>
-                    <li>Experience with modern web development tools and best practices</li>
-                    <li>
-                      Strong problem-solving and analytical skills, with the ability to work independently and as part of a
-                      team
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold">Compensation</h2>
-                  <p className="text-muted-foreground">$80,000 - $120,000 per year, plus benefits</p>
-                </div>
-                <Button className="w-full">Apply Now</Button>
+    <div className="flex flex-col min-h-screen">
+      <Header onMenuClick={toggleSidebar} />
+      <div className="flex flex-1">
+        <Sidebar
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+        />
+        <div className="flex-1 p-8">
+          <header className="flex items-center justify-between mb-8">
+            <Link
+              to="/jobs"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg"
+            >
+              Back to Job Postings
+            </Link>
+          </header>
+
+          {error ? (
+            <div className="text-center">{error}</div>
+          ) : !jobDetails ? (
+            <Spinner />
+          ) : (
+            <div className="p-8 shadow-lg rounded-lg">
+              <h1 className="text-3xl font-bold mb-4">
+                {jobDetails.job_title}
+              </h1>
+              <p className="text-sm mb-2">
+                <span className="font-medium">Company: </span>
+                {jobDetails.company_name}
+              </p>
+              <p className="text-sm mb-4">
+                <span className="font-medium">About Company: </span>
+                {jobDetails.company_profile}
+              </p>
+              <p className="mb-6">{jobDetails.description}</p>
+
+              <div className="mb-4">
+                <span className="font-medium">Deadline: </span>
+                <span>
+                  {new Date(jobDetails.deadline).toLocaleDateString()}
+                </span>
               </div>
+
+              <div className="mb-4">
+                <span className="font-medium">Created By: </span>
+                <span>{jobDetails.created_by}</span>
+              </div>
+
+              <Button
+                onClick={() =>
+                  window.open(jobDetails.registration_link, "_blank")
+                }
+                className="w-full py-2 rounded-md transition duration-300"
+              >
+                Apply Now
+              </Button>
             </div>
-          </div>
-        </main>
+          )}
+        </div>
       </div>
     </div>
-  )
+  );
 }

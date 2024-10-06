@@ -30,7 +30,7 @@ export default function LearningResources() {
                 College Resources
               </h2>
               <Link
-                href="#"
+                to="/resources/details"
                 className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 
               >
@@ -56,7 +56,7 @@ export default function LearningResources() {
                       Download
                     </Button>
                     <Link
-                      href="#"
+                      to="#"
                       className="inline-flex items-center gap-2 text-sm font-medium text-primary-foreground transition-colors hover:text-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                       
                     >
@@ -100,7 +100,7 @@ export default function LearningResources() {
                   </p>
                   <div className="flex items-center gap-2">
                     <Link
-                      href="#"
+                      to="#"
                       className="inline-flex items-center gap-2 text-sm font-medium text-primary-foreground transition-colors hover:text-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                       
                     >
@@ -119,7 +119,7 @@ export default function LearningResources() {
                 Open Educational Resources (OERs)
               </h2>
               <Link
-                href="#"
+                to="#"
                 className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 
               >
@@ -141,7 +141,7 @@ export default function LearningResources() {
                   </p>
                   <div className="flex items-center gap-2">
                     <Link
-                      href="#"
+                      to="#"
                       className="inline-flex items-center gap-2 text-sm font-medium text-primary-foreground transition-colors hover:text-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                       
                     >
@@ -162,7 +162,7 @@ export default function LearningResources() {
                   </p>
                   <div className="flex items-center gap-2">
                     <Link
-                      href="#"
+                      to="#"
                       className="inline-flex items-center gap-2 text-sm font-medium text-primary-foreground transition-colors hover:text-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                       
                     >
@@ -185,7 +185,7 @@ export default function LearningResources() {
                   </p>
                   <div className="flex items-center gap-2">
                     <Link
-                      href="#"
+                      to="#"
                       className="inline-flex items-center gap-2 text-sm font-medium text-primary-foreground transition-colors hover:text-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                       
                     >
@@ -205,7 +205,7 @@ export default function LearningResources() {
                 MOOCs
               </h2>
               <Link
-                href="#"
+                to="#"
                 className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 
               >
@@ -227,7 +227,7 @@ export default function LearningResources() {
                   </p>
                   <div className="flex items-center gap-2">
                     <Link
-                      href="#"
+                      to="#"
                       className="inline-flex items-center gap-2 text-sm font-medium text-primary-foreground transition-colors hover:text-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                       
                     >
@@ -251,7 +251,7 @@ export default function LearningResources() {
                   </p>
                   <div className="flex items-center gap-2">
                     <Link
-                      href="#"
+                      to="#"
                       className="inline-flex items-center gap-2 text-sm font-medium text-primary-foreground transition-colors hover:text-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                       
                     >
@@ -275,7 +275,7 @@ export default function LearningResources() {
                   </p>
                   <div className="flex items-center gap-2">
                     <Link
-                      href="#"
+                      to="#"
                       className="inline-flex items-center gap-2 text-sm font-medium text-primary-foreground transition-colors hover:text-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                       
                     >
