@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Link, useNavigate } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
 import { useAuth } from "../../../hooks/auth";
+import { Filter,Search } from "lucide-react";
 
 export default function UNotifications() {
   const { authStatus, loading } = useAuth();
@@ -17,13 +18,13 @@ export default function UNotifications() {
         <h1 className="text-2xl font-bold">Notifications</h1>
         <div className="flex items-center gap-4">
           <div className="relative w-full max-w-md">
-            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input type="search" placeholder="Search notifications..." className="pl-10 w-full" />
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="flex items-center gap-2">
-                <FilterIcon className="h-5 w-5" />
+                <Filter className="h-5 w-5" />
                 <span>Sort</span>
               </Button>
             </DropdownMenuTrigger>
@@ -163,42 +164,3 @@ export default function UNotifications() {
   )
 }
 
-function FilterIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-    </svg>
-  )
-}
-
-
-function SearchIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  )
-}

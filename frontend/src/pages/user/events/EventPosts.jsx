@@ -1,9 +1,5 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/WenNs7RmZwm
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import {Link} from "react-router-dom"
+import { ArrowRight } from  "lucide-react"
 
 export default function EventPosts() {
   const events = [
@@ -77,16 +73,6 @@ export default function EventPosts() {
               <div className="absolute inset-0 z-10">
                 <span className="sr-only">View event details</span>
               </div>
-              {/* <div className="relative h-48 overflow-hidden">
-                <img
-                  src="/event.png"
-                  alt={event.title}
-                  width={384}
-                  height={192}
-                  className="h-full w-full object-cover transition-all duration-300 group-hover:scale-105"
-                  style={{ aspectRatio: "384/192", objectFit: "cover" }}
-                />
-              </div> */}
               <div className="bg-background p-4">
                 <h3 className="mb-2 text-lg font-bold">{event.title}</h3>
                 <p className="mb-4 text-sm text-muted-foreground">{event.description}</p>
@@ -94,7 +80,7 @@ export default function EventPosts() {
                   <span className="rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
                     {event.type}
                   </span>
-                  <ArrowRightIcon className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:translate-x-1" />
                 </div>
               </div>
             </Link>
@@ -105,22 +91,3 @@ export default function EventPosts() {
   )
 }
 
-function ArrowRightIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="m12 5 7 7-7 7" />
-    </svg>
-  )
-}
