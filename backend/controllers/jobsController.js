@@ -189,6 +189,7 @@ export const userJobs = async (req, res) => {
       const User = await getUserDetails(req);
       const [result] = await conn.query(`
           SELECT 
+          j.id,
           j.job_title,
           j.company_name,
           j.company_profile,
@@ -219,6 +220,7 @@ export const userJob = async (req, res) => {
       const User = await getUserDetails(req);
       const [result] = await conn.query(`
           SELECT
+          j.id,
           j.job_title,
           j.company_name,
           j.company_profile,

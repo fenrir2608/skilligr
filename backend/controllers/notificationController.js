@@ -170,6 +170,7 @@ export const getNotificationsUser = async (req, res) => {
     const User = await getUserDetails(req);
     const [result] = await conn.query(`
       SELECT
+      n.id,
       n.description, 
       n.label,
       u.full_name AS created_by
@@ -196,6 +197,7 @@ export const getNotificationUser = async (req, res) => {
     const User = await getUserDetails(req);
     const [result] = await conn.query(`
       SELECT
+      n.id,
       n.description, 
       n.label,
       u.full_name AS created_by
