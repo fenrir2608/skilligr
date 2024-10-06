@@ -10,7 +10,7 @@ import UpdatePassword from "./pages/Update";
 import LearningResources from "./pages/user/LearningResources";
 import UNotifications from "./pages/user/Notifications/UNotifications";
 import UNotificationDetails from "./pages/user/Notifications/UNotificationDetails";
-import PronounciationTests from "./pages/user/softSkillsHub/PronounciationTests";
+import PronunciationTests from "./pages/user/softSkillsHub/PrononciationTests";
 import GrammarTools from "./pages/user/softSkillsHub/GrammarTools";
 import Feedback from "./pages/user/Feedback";
 import { useAuth } from "./hooks/auth";
@@ -39,7 +39,7 @@ function App() {
           <Route path="/resources" element={<LearningResources />} />
           <Route path="/notifications" element={<UNotifications />} />
           <Route path="/notifications/details" element={<UNotificationDetails />} />
-          <Route path="/softskills/pronounciation" element={<PronounciationTests />} />
+          <Route path="/softskills/pronunciation" element={<PronunciationTests />} />
           <Route path="/softskills/grammar" element={<GrammarTools />} />
           <Route path="/feedback" element={<Feedback />} />
           <Route path="jobs" element = {<JobPosts />} />
