@@ -29,10 +29,11 @@ export default function Signup() {
   const [lastName, setLastName] = useState("");
   const [contactNo, setContactNo] = useState("");
   const [dept, setDept] = useState("");
+  const [sem, setSem] = useState("");
   const [rollNo, setRollNo] = useState("");
   const navigate = useNavigate();
-  const {authStatus,loading} = useAuth();
-  if (loading) return <Spinner/>;
+  const { authStatus, loading } = useAuth();
+  if (loading) return <Spinner />;
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -50,13 +51,15 @@ export default function Signup() {
           full_name: fullName,
           contact_no: contactNo,
           dept,
+          semester: sem,
           roll_no: rollNo,
         }),
       });
       const data = await response.json();
       if (data.success) {
-        navigate("/");
+        navigate("/login");
       } else {
+        console.log(data.message)
         console.error("Signup failed");
       }
     } catch (error) {
@@ -141,7 +144,7 @@ export default function Signup() {
                     onChange={(e) => setContactNo(e.target.value)}
                   />
                 </div>
-                {/* Roll No and Department in the same row */}
+                {/* Roll No and Sem in the same row */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="grid gap-2">
                     <Label htmlFor="roll-no">Roll No</Label>
@@ -154,30 +157,49 @@ export default function Signup() {
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="dept">Department</Label>
-                    <Select required onValueChange={(value) => setDept(value)}>
-                      <SelectTrigger className="">
-                        <SelectValue placeholder="Choose a department" />
+                    <Label htmlFor="sem">Semester</Label>
+                    <Select required onValueChange={(value) => setSem(value)}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Choose a semester" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="computer-science">
-                          Computer Science
-                        </SelectItem>
-                        <SelectItem value="mechanical">Mechanical</SelectItem>
-                        <SelectItem value="electrical">Electrical</SelectItem>
-                        <SelectItem value="civil">Civil</SelectItem>
-                        <SelectItem value="chemical">Chemical</SelectItem>
-                        <SelectItem value="biomedical">Biomedical</SelectItem>
-                        <SelectItem value="aerospace">Aerospace</SelectItem>
-                        <SelectItem value="environmental">
-                          Environmental
-                        </SelectItem>
-                        <SelectItem value="industrial">Industrial</SelectItem>
-                        <SelectItem value="materials">Materials</SelectItem>
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="4">4</SelectItem>
+                        <SelectItem value="5">5</SelectItem>
+                        <SelectItem value="6">6</SelectItem>
+                        <SelectItem value="7">7</SelectItem>
+                        <SelectItem value="8">8</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="dept">Department</Label>
+                  <Select required onValueChange={(value) => setDept(value)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Choose a department" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="computer-science">
+                        Computer Science
+                      </SelectItem>
+                      <SelectItem value="mechanical">Mechanical</SelectItem>
+                      <SelectItem value="electrical">Electrical</SelectItem>
+                      <SelectItem value="civil">Civil</SelectItem>
+                      <SelectItem value="chemical">Chemical</SelectItem>
+                      <SelectItem value="biomedical">Biomedical</SelectItem>
+                      <SelectItem value="aerospace">Aerospace</SelectItem>
+                      <SelectItem value="environmental">
+                        Environmental
+                      </SelectItem>
+                      <SelectItem value="industrial">Industrial</SelectItem>
+                      <SelectItem value="materials">Materials</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 <Button type="submit" className="w-full">
                   Create an account
                 </Button>
