@@ -1,6 +1,6 @@
-import { ArrowRight } from  "lucide-react"
-import {Link} from "react-router-dom"
-import { useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../../hooks/auth";
 import Spinner from "../../../components/Spinner";
 import Sidebar from "../../../components/Sidebar";
@@ -9,66 +9,43 @@ import Header from "../../../components/Header";
 export default function EventPosts() {
   const { authStatus, loading } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [events, setEvents] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/events/getAll', {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (!response.ok) {
+          const text = await response.text();
+          setError(text || 'Failed to fetch events');
+          return;
+        }
+
+        const data = await response.json();
+        console.log(data);
+        setEvents(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchEvents();
+  }, [authStatus]);
+
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   if (loading) return <Spinner />;
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-  const events = [
-    {
-      id: 1,
-      title: "Trivia Night",
-      description: "Test your knowledge at our weekly trivia event!",
-      type: "Quiz",
-      date: "April 15, 2023",
-      time: "7:00 PM",
-      location: "Main Hall",
-    },
-    {
-      id: 2,
-      title: "Book Club Meeting",
-      description: "Discuss the latest novel with fellow book lovers.",
-      type: "Club Event",
-      date: "May 5, 2023",
-      time: "6:30 PM",
-      location: "Library",
-    },
-    {
-      id: 3,
-      title: "Painting Workshop",
-      description: "Learn new techniques and create your own masterpiece.",
-      type: "Workshop",
-      date: "June 10, 2023",
-      time: "2:00 PM",
-      location: "Art Studio",
-    },
-    {
-      id: 4,
-      title: "Outdoor Adventure Club",
-      description: "Join us for a hike through the local nature reserve.",
-      type: "Club Event",
-      date: "July 20, 2023",
-      time: "10:00 AM",
-      location: "Trailhead",
-    },
-    {
-      id: 5,
-      title: "Cooking Class",
-      description: "Master new recipes and techniques in our hands-on class.",
-      type: "Workshop",
-      date: "August 2, 2023",
-      time: "6:00 PM",
-      location: "Culinary Center",
-    },
-    {
-      id: 6,
-      title: "Movie Screening",
-      description: "Enjoy a classic film on the big screen.",
-      type: "Club Event",
-      date: "September 15, 2023",
-      time: "8:00 PM",
-      location: "Auditorium",
-    },
-  ]
+  if (error) return <div className="text-red-500">{error}</div>;
+
   return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
@@ -81,9 +58,8 @@ export default function EventPosts() {
               {events.map((event) => (
                 <Link
                   key={event.id}
-                  to="#"
+                  to={`/events/details/?id=${event.id}`} // Navigate to event details
                   className="group relative block overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-                  
                 >
                   <div className="absolute inset-0 z-10">
                     <span className="sr-only">View event details</span>
@@ -92,9 +68,10 @@ export default function EventPosts() {
                     <h3 className="mb-2 text-lg font-bold">{event.title}</h3>
                     <p className="mb-4 text-sm text-muted-foreground">{event.description}</p>
                     <div className="flex items-center justify-between">
-                      <span className="rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
-                        {event.type}
-                      </span>
+                    <span className="rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
+                      Created by: {event.created_by_name}
+                    </span>
+
                       <ArrowRight className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:translate-x-1" />
                     </div>
                   </div>
@@ -105,6 +82,5 @@ export default function EventPosts() {
         </section>
       </div>
     </div>
-  )
+  );
 }
-
