@@ -3,7 +3,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import UDashboard from "./pages/user/UDashboard";
 import Dashboard from "./pages/admin/Dashboard";
 import Login from "./pages/Login";
-import Landing  from "./pages/Landing";
+import Landing from "./pages/Landing";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import UpdatePassword from "./pages/Update";
@@ -26,44 +26,46 @@ import CareerAssessment from "./pages/user/careerClarity/UCareerAssessment";
 import CollegeResources from "./pages/user/learningResources/CollegeResources";
 
 function App() {
-  const { authStatus, loading } = useAuth(
-    ["/login", "/signup"], // Public routes (Accessible to all users, regardless of authentication status.)
-    ["/login", "/signup","/reset","/update"]  // Restricted routes (Authenticated users are prevented from accessing certain routes and redirected to home)
-  );
+  const publicRoutes = ["/", "/login", "/signup", "/reset", "/update"]; //These routes are accessible with and without authentication
+  const { authStatus, loading } = useAuth(publicRoutes);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  const ProtectedRoute = ({ children }) => {
+    if (!authStatus) {
+      return <Navigate to="/login" replace />;
+    }
+    return children;
+  };
 
   return (
-    <>
-      {loading ? (
-        <Spinner /> 
-      ) : (
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/reset" element={<ForgotPassword />} />
-          <Route path="/update" element={<UpdatePassword />} />
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/user" element={<UDashboard />} />
-          <Route path="/" element={<Landing />} />
-          <Route path="/resources" element={<LearningResources />} />
-          <Route path="/notifications" element={
-            authStatus ? <UNotifications /> : <Navigate to="/login" replace />
-          } />
-          <Route path="/notifications/details" element={<UNotificationDetails />} />
-          <Route path="/softskills/pronunciation" element={<PronunciationTests />} />
-          <Route path="/softskills/grammar" element={<GrammarTools />} />
-          <Route path="/feedback" element={<Feedback />} />
-          <Route path="jobs" element = {<JobPosts />} />
-          <Route path="jobs/details" element = {<JobDetail />} />
-          <Route path="events" element = {<EventPosts />} />
-          <Route path="events/details" element = {<EventDetail />} />
-          <Route path="/resources/details" element={<LearningResourcesDetails />} />
-          <Route path="/career" element={<CareerClarity />} />
-          <Route path="/career/paths" element={<AllLearningPaths />} />
-          <Route path="/career/assessment" element={<CareerAssessment/>} />
-          <Route path="/resources/college" element={<CollegeResources />} />
-        </Routes>
-      )}
-    </>
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/reset" element={<ForgotPassword />} />
+      <Route path="/update" element={<UpdatePassword />} />
+      
+      <Route path="/admin" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/user" element={<ProtectedRoute><UDashboard /></ProtectedRoute>} />
+      <Route path="/resources" element={<ProtectedRoute><LearningResources /></ProtectedRoute>} />
+      <Route path="/notifications" element={<ProtectedRoute><UNotifications /></ProtectedRoute>} />
+      <Route path="/notifications/details" element={<ProtectedRoute><UNotificationDetails /></ProtectedRoute>} />
+      <Route path="/softskills/pronunciation" element={<ProtectedRoute><PronunciationTests /></ProtectedRoute>} />
+      <Route path="/softskills/grammar" element={<ProtectedRoute><GrammarTools /></ProtectedRoute>} />
+      <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
+      <Route path="/jobs" element={<ProtectedRoute><JobPosts /></ProtectedRoute>} />
+      <Route path="/jobs/details" element={<ProtectedRoute><JobDetail /></ProtectedRoute>} />
+      <Route path="/events" element={<ProtectedRoute><EventPosts /></ProtectedRoute>} />
+      <Route path="/events/details" element={<ProtectedRoute><EventDetail /></ProtectedRoute>} />
+      <Route path="/resources/details" element={<ProtectedRoute><LearningResourcesDetails /></ProtectedRoute>} />
+      <Route path="/career" element={<ProtectedRoute><CareerClarity /></ProtectedRoute>} />
+      <Route path="/career/paths" element={<ProtectedRoute><AllLearningPaths /></ProtectedRoute>} />
+      <Route path="/career/assessment" element={<ProtectedRoute><CareerAssessment /></ProtectedRoute>} />
+      <Route path="/resources/college" element={<ProtectedRoute><CollegeResources /></ProtectedRoute>} />
+    </Routes>
   );
 }
 

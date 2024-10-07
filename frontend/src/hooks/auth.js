@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export const useAuth = (publicRoutes = [], restrictedRoutes = []) => {
+export const useAuth = (publicRoutes = []) => {
   const [authStatus, setAuthStatus] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -14,27 +14,6 @@ export const useAuth = (publicRoutes = [], restrictedRoutes = []) => {
       .find((row) => row.startsWith("token="))
       ?.split("=")[1];
 
-    // If the route is public, allow access
-    if (publicRoutes.includes(currentPath)) {
-      setLoading(false);
-      return;
-    }
-
-    // If the route is restricted and the user is authenticated, redirect to home
-    if (restrictedRoutes.includes(currentPath) && token) {
-      navigate("/");
-      setLoading(false);
-      return;
-    }
-
-    // If the user is not authenticated and the route is not public, redirect to login
-    if (!token && !publicRoutes.includes(currentPath)) {
-      navigate("/login");
-      setLoading(false);
-      return;
-    }
-
-    // Verify token for authenticated users
     const verifyToken = async () => {
       try {
         const response = await fetch("http://localhost:3000/user/verifyCookie", {
@@ -53,18 +32,29 @@ export const useAuth = (publicRoutes = [], restrictedRoutes = []) => {
             fullName: data.full_name,
           });
         } else {
-          navigate("/login");
+          setAuthStatus(null);
         }
       } catch (error) {
         console.error("Error verifying token:", error);
-        navigate("/login");
+        setAuthStatus(null);
       } finally {
         setLoading(false);
       }
     };
 
-    verifyToken();
+    if (!token) {
+      // If there's no token, set authStatus to null
+      setAuthStatus(null);
+      setLoading(false);
+    } else {
+      // If there's a token, always verify it, regardless of the route
+      verifyToken();
+    }
   }, [location.pathname]);
 
-  return { authStatus, loading };
+  return { 
+    authStatus, 
+    loading, 
+    isPublicRoute: publicRoutes.includes(location.pathname) 
+  };
 };
