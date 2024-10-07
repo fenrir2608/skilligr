@@ -199,6 +199,7 @@ export const userEvents = async (req, res) => {
     const User = await getUserDetails(req);
     const [result] = await conn.query(`
             SELECT
+            e.id,
             e.title, 
             e.description,
             e.event_link,
@@ -224,6 +225,7 @@ export const userEvent = async (req, res) => {
     const User = await getUserDetails(req);
     const [result] = await conn.query(`
             SELECT
+            e.id,
             e.title, 
             e.description,
             e.event_link,
