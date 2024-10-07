@@ -17,6 +17,7 @@
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-select": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.0",
+    "@speechly/speech-recognition-polyfill": "github:speechly/speech-recognition-polyfill",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "framer-motion": "^11.11.1",
@@ -25,6 +26,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.26.2",
+    "react-speech-recognition": "^3.10.0",
+    "regenerator-runtime": "^0.14.1",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "tw-elements": "^1.0.0-beta2"
