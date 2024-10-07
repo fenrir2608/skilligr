@@ -5,13 +5,12 @@ import Spinner from "../../../components/Spinner";
 import Sidebar from "../../../components/Sidebar";
 import Header from "../../../components/Header";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 export default function EventDetail() {
   const { authStatus, loading } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [eventDetails, setEventDetails] = useState(null);
-  const [error, setError] = useState(null);
+  const [noEventMessage, setNoEventMessage] = useState(null); // For showing no event message
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id"); // Extract event ID from URL
@@ -29,13 +28,17 @@ export default function EventDetail() {
 
         if (response.ok) {
           const data = await response.json();
-          setEventDetails(data[0]);
+          if (data.length === 0) {
+            setNoEventMessage("No event available.");
+          } else {
+            setEventDetails(data[0]);
+          }
         } else {
-          setError("Failed to load event details.");
+          setNoEventMessage("Failed to load event details.");
         }
       } catch (error) {
         console.error("Failed to fetch event details", error);
-        setError("An error occurred while fetching event details.");
+        setNoEventMessage("An error occurred while fetching event details.");
       }
     };
 
@@ -56,41 +59,42 @@ export default function EventDetail() {
         <section className="py-12 md:py-16 lg:py-20 flex justify-center">
           <div className="container px-4 md:px-6 max-w-2xl">
             <div className="grid grid-cols-1 gap-8">
-              {error ? (
-                <div className="text-center">{error}</div>
+              {/* If no event message is available, display it */}
+              {noEventMessage ? (
+                <p className="text-center text-lg text-muted-foreground">
+                  {noEventMessage}
+                </p>
               ) : !eventDetails ? (
-                <Spinner />
+                <Spinner /> // Show spinner while loading details
               ) : (
                 <>
                   <div className="text-center">
                     <h1 className="text-3xl font-bold mb-4">{eventDetails.title}</h1>
                     <p className="text-muted-foreground mb-6">{eventDetails.description}</p>
                     <div className="flex flex-col items-center justify-center mb-6 space-y-4">
-                    <div>
-                      <p className="text-sm font-medium mb-1">Scheduled At:</p>
-                      <p className="text-lg font-bold">
-                        {new Date(eventDetails.scheduled_at).toLocaleString()}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium mb-1">Ends At:</p>
-                      <p className="text-lg font-bold">
-                        {new Date(eventDetails.ends_at).toLocaleString()}
-                      </p>
-                    </div>
+                      <div>
+                        <p className="text-sm font-medium mb-1">Scheduled At:</p>
+                        <p className="text-lg font-bold">
+                          {new Date(eventDetails.scheduled_at).toLocaleString()}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium mb-1">Ends At:</p>
+                        <p className="text-lg font-bold">
+                          {new Date(eventDetails.ends_at).toLocaleString()}
+                        </p>
+                      </div>
                       <div>
                         <p className="text-sm font-medium mb-1">Location</p>
                         <p className="text-lg font-bold">{eventDetails.location || "Venue details not available"}</p>
                       </div>
                     </div>
                     <Button
-                      onClick={() => window.open(eventDetails.event_link, "_blank")} 
+                      onClick={() => window.open(eventDetails.event_link, "_blank")}
                       className="w-full py-2 rounded-md transition duration-300"
                     >
                       Join Event
                     </Button>
-
-
                   </div>
 
                   <div className="mt-8 md:mt-12 lg:mt-16">
