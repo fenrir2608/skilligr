@@ -1,198 +1,118 @@
-import React from 'react'
-import { useAuth } from '../../../hooks/auth'
+import { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import Spinner from "../../../components/Spinner";
-import {Link} from "react-router-dom"
+import { useAuth } from "../../../hooks/auth";
+import { ArrowLeft } from "lucide-react";
+import Sidebar from "../../../components/Sidebar";
+import Header from "../../../components/Header";
 import { Button } from "@/components/ui/button"
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 
 
 export default function LearningResourcesDetails() {
     const { authStatus, loading } = useAuth();
-    if (loading) return <Spinner/>;
+    const [learningResource, setLearningResources] = useState(null);
+    const [error, setError] = useState(null);
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const learningResourceId = searchParams.get("id"); 
+
+    useEffect(() => {
+      if(authStatus && learningResourceId) 
+        {
+        const fetchLearningResources = async () => {
+          try {
+            const response = await fetch(`http://localhost:3000/resources/get/${learningResourceId}`, {
+              method: "GET",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+  
+            if (response.ok) {
+              const data = await response.json();
+              setLearningResources(data[0]);
+              console.log(data[0]);
+            } else {
+              setError("Failed to load learning resource details.");
+            }
+          } catch (error) {
+            console.error("Failed to fetch learning resource", error);
+            setError("An error occurred while fetching learning resource details.");
+          }}
+          fetchLearningResources();
+        }
+    }, [authStatus, learningResourceId]);
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  if (loading) return <Spinner />;
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-3xl font-bold text-primary-foreground mb-8">College Resources</h1>
-      <div className="space-y-6">
-        <div className="bg-card rounded-lg p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-card-foreground">Academic Resources</h2>
-            <Link href="#" className="text-primary hover:underline" prefetch={false}>
-              View All
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex items-center justify-between bg-background rounded-md p-4 hover:bg-accent hover:text-accent-foreground transition-colors">
-              <div className="flex items-center space-x-4">
-                <FileIcon className="h-6 w-6 text-muted-foreground" />
-                <div>
-                  <h3 className="text-base font-medium text-card-foreground">Syllabus Guide</h3>
-                  <p className="text-sm text-muted-foreground">PDF, 2.5MB</p>
-                </div>
-              </div>
-              <Button variant="ghost" size="icon">
-                <DownloadIcon className="h-5 w-5" />
-              </Button>
-            </div>
-            <div className="flex items-center justify-between bg-background rounded-md p-4 hover:bg-accent hover:text-accent-foreground transition-colors">
-              <div className="flex items-center space-x-4">
-                <FileIcon className="h-6 w-6 text-muted-foreground" />
-                <div>
-                  <h3 className="text-base font-medium text-card-foreground">Presentation Templates</h3>
-                  <p className="text-sm text-muted-foreground">PPT, 4.2MB</p>
-                </div>
-              </div>
-              <Button variant="ghost" size="icon">
-                <DownloadIcon className="h-5 w-5" />
-              </Button>
-            </div>
-            <div className="flex items-center justify-between bg-background rounded-md p-4 hover:bg-accent hover:text-accent-foreground transition-colors">
-              <div className="flex items-center space-x-4">
-                <LinkIcon className="h-6 w-6 text-muted-foreground" />
-                <div>
-                  <h3 className="text-base font-medium text-card-foreground">Writing Center</h3>
-                  <p className="text-sm text-muted-foreground">Link</p>
-                </div>
-              </div>
-              <Link href="#" className="text-primary hover:underline" prefetch={false}>
-                Visit
+    <div className="flex flex-col min-h-screen">
+      <Header onMenuClick={toggleSidebar} />
+      <div className="flex flex-1">
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+        <div className="flex-1 p-8">
+            <header className="flex items-center justify-between mb-8">
+              <Link
+                to="/resources"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg"
+              >
+                <ArrowLeft className="h-5 w-5" />
+                Back to Resources
               </Link>
-            </div>
-            <div className="flex items-center justify-between bg-background rounded-md p-4 hover:bg-accent hover:text-accent-foreground transition-colors">
-              <div className="flex items-center space-x-4">
-                <FileIcon className="h-6 w-6 text-muted-foreground" />
-                <div>
-                  <h3 className="text-base font-medium text-card-foreground">Research Guidelines</h3>
-                  <p className="text-sm text-muted-foreground">PDF, 3.1MB</p>
+            </header>
+
+          {error ? (
+            <div className="text-center text-red-500">{error}</div>
+          ) : !learningResource ? (
+            <Spinner />
+          ) : (
+            <div className="p-8 shadow-md rounded-lg bg-card">
+              <h1 className="text-3xl font-semibold mb-4">{learningResource.title}</h1>
+              <p className="text-sm mb-6">
+                <span className="font-medium">Type: </span>
+                {learningResource.type || "N/A"}
+              </p>
+
+              <h2 className="text-lg font-medium mb-2">Description</h2>
+              <p className="mb-6">{learningResource.resources}</p>
+
+              <div className="text-sm">
+                <div className="mb-4">
+                  <span className="font-medium">Created By: </span>
+                  {learningResource.created_by || "Unknown"}
                 </div>
+                <div className="mb-4">
+                            <span className="font-medium">Created At: </span>
+                            {learningResource?.created_at ? formatDate(learningResource.created_at) : "N/A"}
+                        </div>
               </div>
-              <Button variant="ghost" size="icon">
-                <DownloadIcon className="h-5 w-5" />
-              </Button>
+
+              {learningResource.downloadLink && (
+                <Button variant="primary">
+                  <DownloadIcon className="h-5 w-5 mr-2" />
+                  Download Resource
+                </Button>
+              )}
             </div>
-          </div>
-        </div>
-        <div className="bg-card rounded-lg p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-card-foreground">Student Life Resources</h2>
-            <Link href="#" className="text-primary hover:underline" prefetch={false}>
-              View All
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex items-center justify-between bg-background rounded-md p-4 hover:bg-accent hover:text-accent-foreground transition-colors">
-              <div className="flex items-center space-x-4">
-                <FileIcon className="h-6 w-6 text-muted-foreground" />
-                <div>
-                  <h3 className="text-base font-medium text-card-foreground">Campus Map</h3>
-                  <p className="text-sm text-muted-foreground">PDF, 1.8MB</p>
-                </div>
-              </div>
-              <Button variant="ghost" size="icon">
-                <DownloadIcon className="h-5 w-5" />
-              </Button>
-            </div>
-            <div className="flex items-center justify-between bg-background rounded-md p-4 hover:bg-accent hover:text-accent-foreground transition-colors">
-              <div className="flex items-center space-x-4">
-                <LinkIcon className="h-6 w-6 text-muted-foreground" />
-                <div>
-                  <h3 className="text-base font-medium text-card-foreground">Student Organizations</h3>
-                  <p className="text-sm text-muted-foreground">Link</p>
-                </div>
-              </div>
-              <Link href="#" className="text-primary hover:underline" prefetch={false}>
-                Visit
-              </Link>
-            </div>
-            <div className="flex items-center justify-between bg-background rounded-md p-4 hover:bg-accent hover:text-accent-foreground transition-colors">
-              <div className="flex items-center space-x-4">
-                <FileIcon className="h-6 w-6 text-muted-foreground" />
-                <div>
-                  <h3 className="text-base font-medium text-card-foreground">Student Handbook</h3>
-                  <p className="text-sm text-muted-foreground">PDF, 5.2MB</p>
-                </div>
-              </div>
-              <Button variant="ghost" size="icon">
-                <DownloadIcon className="h-5 w-5" />
-              </Button>
-            </div>
-            <div className="flex items-center justify-between bg-background rounded-md p-4 hover:bg-accent hover:text-accent-foreground transition-colors">
-              <div className="flex items-center space-x-4">
-                <LinkIcon className="h-6 w-6 text-muted-foreground" />
-                <div>
-                  <h3 className="text-base font-medium text-card-foreground">Campus Events</h3>
-                  <p className="text-sm text-muted-foreground">Link</p>
-                </div>
-              </div>
-              <Link href="#" className="text-primary hover:underline" prefetch={false}>
-                Visit
-              </Link>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
-  )
-}
-
-function DownloadIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <polyline points="7 10 12 15 17 10" />
-      <line x1="12" x2="12" y1="15" y2="3" />
-    </svg>
-  )
-}
-
-
-function FileIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-    </svg>
-  )
-}
-
-
-function LinkIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-    </svg>
-  )
+  );
 }

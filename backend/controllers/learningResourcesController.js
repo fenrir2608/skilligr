@@ -166,7 +166,8 @@ export const userResource = async (req, res) => {
             r.title,
             r.resources,
             r.type,
-            r.content, 
+            r.content,
+            r.created_at, 
             u.full_name AS created_by
             FROM
             resources r
