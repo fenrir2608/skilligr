@@ -1,10 +1,10 @@
 import { useAuth } from '../../../hooks/auth'
 import Spinner from "../../../components/Spinner";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar";
 import Header from "../../../components/Header";
 import React, { useState } from "react";
-import { CheckIcon,GoalIcon,TreesIcon } from 'lucide-react';
+import { CheckIcon, GoalIcon, TreesIcon } from 'lucide-react';
 
 export default function CareerClarity() {
   const { authStatus, loading } = useAuth();
@@ -12,6 +12,7 @@ export default function CareerClarity() {
   if (loading) return <Spinner />;
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
   return (
     <div className="flex">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
@@ -36,6 +37,7 @@ export default function CareerClarity() {
               </Link>
             </div>
           </section>
+
           <section className="container grid grid-cols-1 gap-6 px-4 md:grid-cols-3 md:px-6">
             <div className="rounded-lg border bg-card p-6 shadow-sm">
               <div className="flex flex-col items-center justify-center space-y-2">
@@ -59,6 +61,7 @@ export default function CareerClarity() {
               </div>
             </div>
           </section>
+
           <section className="container px-4 md:px-6">
             <div className="space-y-4">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
@@ -69,57 +72,62 @@ export default function CareerClarity() {
                 paths to help you achieve your goals.
               </p>
               <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                <Link
-                  to="#"
+              <a
+                href="/Learning paths/ai-data-scientist.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+              >
+                  <div className="text-sm font-medium leading-none group-hover:underline">
+                    AI Data Scientist
+                  </div>
+                  <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    Learn how to harness machine learning algorithms to extract insights from data.
+                  </div>
+                </a>
+                <a
+                  href="/Learning paths/api-design.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                 >
                   <div className="text-sm font-medium leading-none group-hover:underline">
-                    JavaScript
+                    API Design
                   </div>
                   <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                    Learn the fundamentals of JavaScript and build dynamic web
-                    applications.
+                    Master the principles of designing robust and scalable APIs.
                   </div>
-                </Link>
-                <Link
-                  to="#"
+                </a>
+                <a
+                  href="/Learning paths/backend.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                > 
+                  <div className="text-sm font-medium leading-none group-hover:underline">
+                    Backend
+                  </div>
+                  <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    Develop backend systems that power web applications and services.
+                  </div>
+                </a>
+                <a
+                  href="/Learning paths/cyber-security.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                 >
                   <div className="text-sm font-medium leading-none group-hover:underline">
-                    Front-End Developer
+                    Cyber Security
                   </div>
                   <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                    Become a skilled front-end developer and create beautiful user
-                    interfaces.
+                    Secure digital systems and protect data from cyber threats.
                   </div>
-                </Link>
-                <Link
-                  to="#"
-                  className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                >
-                  <div className="text-sm font-medium leading-none group-hover:underline">
-                    Back-End Developer
-                  </div>
-                  <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                    Dive into server-side development and build robust web
-                    applications.
-                  </div>
-                </Link>
-                <Link
-                  to="#"
-                  className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                >
-                  <div className="text-sm font-medium leading-none group-hover:underline">
-                    Data Analyst
-                  </div>
-                  <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                    Develop data analysis skills and uncover valuable insights from
-                    data.
-                  </div>
-                </Link>
+                </a>
               </div>
             </div>
           </section>
+
           <section className="container px-4 md:px-6">
             <div className="flex justify-between items-center">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
@@ -137,101 +145,110 @@ export default function CareerClarity() {
               that aligns with your career goals.
             </p>
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              <Link
-                to="#"
+            <a
+                href="/Learning paths/ai-data-scientist.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+              >
+                  <div className="text-sm font-medium leading-none group-hover:underline">
+                    AI Data Scientist
+                  </div>
+                  <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    Learn how to harness machine learning algorithms to extract insights from data.
+                  </div>
+                </a>
+                <a
+                  href="/Learning paths/api-design.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                >
+                  <div className="text-sm font-medium leading-none group-hover:underline">
+                    API Design
+                  </div>
+                  <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    Master the principles of designing robust and scalable APIs.
+                  </div>
+                </a>
+                <a
+                  href="/Learning paths/backend.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                > 
+                  <div className="text-sm font-medium leading-none group-hover:underline">
+                    Backend
+                  </div>
+                  <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    Develop backend systems that power web applications and services.
+                  </div>
+                </a>
+                <a
+                  href="/Learning paths/cyber-security.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                >
+                  <div className="text-sm font-medium leading-none group-hover:underline">
+                    Cyber Security
+                  </div>
+                  <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    Secure digital systems and protect data from cyber threats.
+                  </div>
+                </a>
+                <a
+                  href="/Learning paths/devops.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                >
+                <div className="text-sm font-medium leading-none group-hover:underline">
+                  DevOps
+                </div>
+                <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                  Learn to integrate development and operations for efficient software delivery.
+                </div>
+              </a>
+              <a
+                href="/Learning paths/frontend.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
               >
                 <div className="text-sm font-medium leading-none group-hover:underline">
-                  JavaScript
+                  Frontend
                 </div>
                 <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                  Learn the fundamentals of JavaScript and build dynamic web
-                  applications.
+                  Build stunning and responsive user interfaces for web applications.
                 </div>
-              </Link>
-              <Link
-                to="#"
+              </a>
+              <a
+                href="/Learning paths/full-stack.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-              >
-                <div className="text-sm font-medium leading-none group-hover:underline">
-                  Front-End Developer
+              >  
+              <div className="text-sm font-medium leading-none group-hover:underline">
+                  Full Stack
                 </div>
                 <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                  Become a skilled front-end developer and create beautiful user
-                  interfaces.
+                  Master both frontend and backend technologies to become a full stack developer.
                 </div>
-              </Link>
-              <Link
-                to="#"
-                className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-              >
-                <div className="text-sm font-medium leading-none group-hover:underline">
-                  Back-End Developer
-                </div>
-                <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                  Dive into server-side development and build robust web
-                  applications.
-                </div>
-              </Link>
-              <Link
-                to="#"
-                className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-              >
-                <div className="text-sm font-medium leading-none group-hover:underline">
-                  Data Analyst
-                </div>
-                <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                  Develop data analysis skills and uncover valuable insights from
-                  data.
-                </div>
-              </Link>
-              <Link
-                to="#"
-                className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-              >
-                <div className="text-sm font-medium leading-none group-hover:underline">
-                  Product Manager
-                </div>
-                <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                  Learn the skills to effectively manage and deliver successful
-                  products.
-                </div>
-              </Link>
-              <Link
-                to="#"
-                className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-              >
-                <div className="text-sm font-medium leading-none group-hover:underline">
-                  Digital Marketing
-                </div>
-                <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                  Develop expertise in digital marketing strategies and tactics.
-                </div>
-              </Link>
-              <Link
-                to="#"
-                className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-              >
+                </a>
+                <a
+                  href="/Learning paths/ux-design.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                >
                 <div className="text-sm font-medium leading-none group-hover:underline">
                   UX Design
                 </div>
                 <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                  Explore the principles of user experience design and create
-                  intuitive interfaces.
+                  Learn how to create user-centric designs that enhance user experiences.
                 </div>
-              </Link>
-              <Link
-                to="#"
-                className="group flex h-auto w-full flex-col justify-start gap-1 rounded-md bg-card p-4 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-              >
-                <div className="text-sm font-medium leading-none group-hover:underline">
-                  Data Science
-                </div>
-                <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                  Dive into the world of data science and learn to extract
-                  insights from data.
-                </div>
-              </Link>
+              </a>
             </div>
           </section>
         </div>
