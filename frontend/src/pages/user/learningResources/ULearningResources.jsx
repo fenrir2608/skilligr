@@ -32,7 +32,6 @@ export default function LearningResources() {
             const data = await response.json();
             // console.log(data);
             setLearningResources(data);
-            console.log(data);
           }
           else if(response.status === 401)
           {
@@ -76,7 +75,7 @@ export default function LearningResources() {
         <main className="flex-1 overflow-x-hidden overflow-y-auto">
           <div className="container mx-auto px-4 py-8">
             {/* College Resources section */}
-            <section>
+            <section className="mb-12">
               <div className="flex items-center justify-between">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                   College Resources
@@ -89,9 +88,10 @@ export default function LearningResources() {
                 </Link>
               </div>
               <div className="grid gap-6 mt-8 md:grid-cols-3">
-                {/* Check if there are learning resources to display */}
-                {noLearningResourcesMessage ? (
-                  <p>{noLearningResourcesMessage}</p>
+                {learningResources.length === 0 ? (
+                  <p className="col-span-3 text-center text-lg text-muted-foreground">
+                    {noLearningResourcesMessage || "No resources available"}
+                  </p>
                 ) : (
                   learningResources.slice(0, 6).map((resource, index) => (
                     <Card key={index} onClick={() => handleCardClick(resource.id)} className="cursor-pointer">
@@ -106,7 +106,6 @@ export default function LearningResources() {
                             <DownloadIcon className="h-4 w-4 mr-2" />
                             Download
                           </Button>
-                          
                         </div>
                       </CardContent>
                     </Card>

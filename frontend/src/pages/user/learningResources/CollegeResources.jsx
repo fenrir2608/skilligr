@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Sidebar from "../../../components/Sidebar";
 import Header from "../../../components/Header";
-import { FileIcon, FileTextIcon, FileVideoIcon, Link2, DownloadIcon, ArrowLeft } from "lucide-react"; // Import ArrowLeft icon
+import { FileIcon, DownloadIcon, ArrowLeft } from "lucide-react"; // Import ArrowLeft icon
 
 export default function CollegeResources() {
   const { authStatus, loading } = useAuth();
@@ -31,7 +31,6 @@ export default function CollegeResources() {
           {
             const data = await response.json();
             setLearningResources(data);
-            console.log(data);
           }
           else if(response.status === 401)
           {
@@ -89,8 +88,10 @@ export default function CollegeResources() {
             <section>
               <div className="grid gap-6 mt-8 md:grid-cols-3">
                 {/* Check if there are learning resources to display */}
-                {noLearningResourcesMessage ? (
-                  <p>{noLearningResourcesMessage}</p>
+                {learningResources.length === 0 ? (
+                  <p className="col-span-3 text-center text-lg text-muted-foreground">
+                    {noLearningResourcesMessage || "No resources available"}
+                  </p>
                 ) : (
                   learningResources.map((resource, index) => (
                     <Card key={index} onClick={()=>handleCardClick(resource.id)} className='cursor-pointer'>
