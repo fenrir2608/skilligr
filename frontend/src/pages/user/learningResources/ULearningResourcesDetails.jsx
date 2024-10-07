@@ -44,7 +44,7 @@ export default function LearningResourcesDetails() {
             if (response.ok) {
               const data = await response.json();
               setLearningResources(data[0]);
-              console.log(data[0]);
+              // console.log(data[0]);
             } else {
               setError("Failed to load learning resource details.");
             }

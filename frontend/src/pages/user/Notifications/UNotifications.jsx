@@ -106,11 +106,11 @@ export default function UNotifications() {
             </section>
 
             <section className="container px-4 md:px-6">
-              {noNotificationsMessage ? (
-                <div className="text-center text-lg text-muted-foreground">
-                  {noNotificationsMessage}
-                </div>
-              ) : (
+            {notifications.length === 0 ? (
+                  <p className="col-span-3 text-center text-lg text-muted-foreground">
+                    {noNotificationsMessage || "No notification available"}
+                  </p>
+                ) : (
                 <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                   {notifications.map((notification, index) => (
                     <Card key={index} onClick={() => handleCardClick(notification.id)} className="cursor-pointer">
