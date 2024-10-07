@@ -25,6 +25,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       className={`bg-background border-r w-64 p-4 fixed top-0 bottom-0 left-0 transition-transform duration-300 ease-in-out ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } md:translate-x-0 md:static`}
+      onClick={onClose} // This line will close the sidebar if you click outside
     >
       <div className="flex items-center mb-8">
         <Link to="/" className="flex items-center">
