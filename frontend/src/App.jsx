@@ -23,6 +23,7 @@ import LearningResourcesDetails from "./pages/user/learningResources/ULearningRe
 import CareerClarity from "./pages/user/careerClarity/UCareerClarity";
 import AllLearningPaths from "./pages/user/careerClarity/UAllLearningPaths";
 import CareerAssessment from "./pages/user/careerClarity/UCareerAssessment";
+import CollegeResources from "./pages/user/learningResources/CollegeResources";
 
 function App() {
   const { authStatus, loading } = useAuth(
@@ -59,6 +60,7 @@ function App() {
           <Route path="/career" element={<CareerClarity />} />
           <Route path="/career/paths" element={<AllLearningPaths />} />
           <Route path="/career/assessment" element={<CareerAssessment/>} />
+          <Route path="/resources/college" element={<CollegeResources />} />
         </Routes>
       )}
     </>
