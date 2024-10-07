@@ -11,6 +11,7 @@ export default function EventPosts() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
+  const [noEventsMessage, setNoEventsMessage] = useState(null); // State for no events message
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -32,6 +33,13 @@ export default function EventPosts() {
         const data = await response.json();
         console.log(data);
         setEvents(data);
+
+        // Check if no events are available
+        if (data.length === 0) {
+          setNoEventsMessage('No events available.'); // Set no events message
+        } else {
+          setNoEventsMessage(null); // Clear the message if events are available
+        }
       } catch (err) {
         setError(err.message);
       }
@@ -54,30 +62,37 @@ export default function EventPosts() {
         <section className="py-12 md:py-16 lg:py-20">
           <div className="container px-4 md:px-6">
             <h2 className="mb-8 text-2xl font-bold md:text-3xl lg:text-4xl">Upcoming Events</h2>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {events.map((event) => (
-                <Link
-                  key={event.id}
-                  to={`/events/details/?id=${event.id}`} // Navigate to event details
-                  className="group relative block overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
-                >
-                  <div className="absolute inset-0 z-10">
-                    <span className="sr-only">View event details</span>
-                  </div>
-                  <div className="bg-background p-4">
-                    <h3 className="mb-2 text-lg font-bold">{event.title}</h3>
-                    <p className="mb-4 text-sm text-muted-foreground">{event.description}</p>
-                    <div className="flex items-center justify-between">
-                    <span className="rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
-                      Created by: {event.created_by_name}
-                    </span>
-
-                      <ArrowRight className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:translate-x-1" />
+            
+            {/* Check if events are available */}
+            {events.length === 0 ? (
+              <p className="text-center text-lg text-muted-foreground">
+                {noEventsMessage || "No events available."}
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {events.map((event) => (
+                  <Link
+                    key={event.id}
+                    to={`/events/details/?id=${event.id}`} // Navigate to event details
+                    className="group relative block overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                  >
+                    <div className="absolute inset-0 z-10">
+                      <span className="sr-only">View event details</span>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                    <div className="bg-background p-4">
+                      <h3 className="mb-2 text-lg font-bold">{event.title}</h3>
+                      <p className="mb-4 text-sm text-muted-foreground">{event.description}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="rounded-md bg-primary px-2 py-1 text-xs font-medium text-primary-foreground">
+                          Created by: {event.created_by_name}
+                        </span>
+                        <ArrowRight className="h-4 w-4 text-muted-foreground transition-all duration-300 group-hover:translate-x-1" />
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </div>
