@@ -137,6 +137,7 @@ export default function Signup() {
                   <Input
                     id="contact-no"
                     placeholder="Your contact number"
+                    pattern="\d{10}"
                     required
                     value={contactNo}
                     onChange={(e) => setContactNo(e.target.value)}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from '../../../hooks/auth';
+import { useAuth } from "../../../hooks/auth";
 import Spinner from "../../../components/Spinner";
 import { Link } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar";
@@ -10,7 +10,7 @@ export default function CareerAssessment() {
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
+
   const { authStatus, loading } = useAuth();
   if (loading) return <Spinner />;
 
@@ -73,33 +73,39 @@ export default function CareerAssessment() {
   const calculateResults = () => {
     const careerRecommendations = [
       {
-        title: "Software Development",
-        description: "Become a skilled front-end or back-end developer.",
+        title: "Full-Stack Development",
+        description: "Master the skills to build modern web applications.",
+        link: "/Learning paths/full-stack.pdf",
       },
       {
-        title: "Data Analysis",
+        title: "AI Data Scientist",
         description:
-          "Develop data analysis skills and uncover valuable insights from data.",
+          "Learn to analyze data and build predictive models using machine learning.",
+        link: "/Learning paths/ai-data-scientist.pdf",
       },
       {
-        title: "Product Management",
+        title: "Backend Development",
         description:
-          "Learn the skills to effectively manage and deliver successful products.",
+          "Build scalable and secure server-side applications using Node.js.",
+        link: "/Learning paths/backend.pdf",
       },
       {
-        title: "Digital Marketing",
+        title: "Cyber Security",
         description:
-          "Develop expertise in digital marketing strategies and tactics.",
+          "Protect organizations from cyber threats and secure sensitive data.",
+        link: "/Learning paths/cyber-security.pdf",
       },
       {
-        title: "UX Design",
+        title: "DevOps Engineer",
         description:
-          "Explore the principles of user experience design and create intuitive interfaces.",
+          "Develop the skills to automate and streamline software development.",
+        link: "/Learning paths/devops.pdf",
       },
       {
-        title: "Data Science",
+        title: "UX design",
         description:
-          "Dive into the world of data science and learn to extract insights from data.",
+          "Create user-friendly interfaces and design engaging digital experiences.",
+        link: "/Learning paths/ux-design.pdf",
       },
     ];
     return careerRecommendations;
@@ -108,7 +114,7 @@ export default function CareerAssessment() {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
- return (
+  return (
     <div className="flex h-screen overflow-hidden">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="flex-1 flex flex-col overflow-hidden">
@@ -120,7 +126,8 @@ export default function CareerAssessment() {
                 <div className="text-center mb-8">
                   <h1 className="text-3xl font-bold mb-2">Career Assessment</h1>
                   <p className="text-muted-foreground">
-                    Answer a few questions to get personalized career recommendations.
+                    Answer a few questions to get personalized career
+                    recommendations.
                   </p>
                 </div>
                 <div className="bg-card rounded-md p-6">
@@ -129,19 +136,21 @@ export default function CareerAssessment() {
                       {questions[currentQuestion].prompt}
                     </h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                      {questions[currentQuestion].options.map((option, index) => (
-                        <button
-                          key={index}
-                          className={`bg-background rounded-md p-6 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none ${
-                            selectedAnswers[currentQuestion] === index
-                              ? "bg-accent text-accent-foreground"
-                              : ""
-                          }`}
-                          onClick={() => handleAnswerSelect(index)}
-                        >
-                          {option}
-                        </button>
-                      ))}
+                      {questions[currentQuestion].options.map(
+                        (option, index) => (
+                          <button
+                            key={index}
+                            className={`bg-background rounded-md p-6 transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none ${
+                              selectedAnswers[currentQuestion] === index
+                                ? "bg-accent text-accent-foreground"
+                                : ""
+                            }`}
+                            onClick={() => handleAnswerSelect(index)}
+                          >
+                            {option}
+                          </button>
+                        )
+                      )}
                     </div>
                   </div>
                   <div className="flex justify-end">
@@ -157,9 +166,12 @@ export default function CareerAssessment() {
             ) : (
               <div>
                 <div className="text-center mb-8">
-                  <h1 className="text-3xl font-bold mb-2">Career Recommendations</h1>
+                  <h1 className="text-3xl font-bold mb-2">
+                    Career Recommendations
+                  </h1>
                   <p className="text-muted-foreground">
-                    Based on your responses, here are some career paths to consider:
+                    Based on your responses, here are some career paths to
+                    consider:
                   </p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -175,7 +187,7 @@ export default function CareerAssessment() {
                         {recommendation.description}
                       </p>
                       <a
-                        href="#"
+                        href={recommendation.link}
                         className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 mt-4"
                       >
                         Download Learning Path
