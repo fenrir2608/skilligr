@@ -181,9 +181,10 @@ export default function Signup() {
                       <SelectValue placeholder="Choose a department" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="computer-science">
+                      <SelectItem value="Computer Science">
                         Computer Science
                       </SelectItem>
+                      <SelectItem value="Information Technology">Information Technology</SelectItem>
                       <SelectItem value="mechanical">Mechanical</SelectItem>
                       <SelectItem value="electrical">Electrical</SelectItem>
                       <SelectItem value="civil">Civil</SelectItem>
