@@ -24,6 +24,7 @@ import CareerClarity from "./pages/user/careerClarity/UCareerClarity";
 import AllLearningPaths from "./pages/user/careerClarity/UAllLearningPaths";
 import CareerAssessment from "./pages/user/careerClarity/UCareerAssessment";
 import CollegeResources from "./pages/user/learningResources/CollegeResources";
+import AdminResources from "./pages/admin/learningResources/LearningResources";
 
 function App() {
   const publicRoutes = ["/", "/login", "/signup", "/reset", "/update"]; //These routes are accessible with and without authentication
@@ -65,6 +66,7 @@ function App() {
       <Route path="/career/paths" element={<ProtectedRoute><AllLearningPaths /></ProtectedRoute>} />
       <Route path="/career/assessment" element={<ProtectedRoute><CareerAssessment /></ProtectedRoute>} />
       <Route path="/resources/college" element={<ProtectedRoute><CollegeResources /></ProtectedRoute>} />
+      <Route path="/admin/resources" element={<ProtectedRoute><AdminResources /></ProtectedRoute>} />
     </Routes>
   );
 }
