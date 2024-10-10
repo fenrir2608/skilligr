@@ -9,11 +9,19 @@ import { ArrowRight, CalendarDays, Mic } from "lucide-react";
 // Function to generate random English sentences
 const generateSentence = () => {
   const sentences = [
-    "The quick brown fox jumps over the lazy dog",
-    "A journey of a thousand miles begins with a single step",
-    "To be or not to be, that is the question",
-    "All that glitters is not gold",
-    "Actions speak louder than words",
+    "She sells seashells by the seashore",
+    "How can a clam cram in a clean cream can",
+    "I scream, you scream, we all scream for ice cream",
+    "I saw Susie sitting in a shoeshine shop",
+    "Peter Piper picked a peck of pickled peppers",
+    "Betty Botter bought some butter but she said this butter's bitter",
+    "A proper copper coffee pot",
+    "How much wood would a woodchuck chuck if a woodchuck could chuck wood",
+    "I wish to wish the wish you wish to wish, but if you wish the wish the witch wishes, I won't wish the wish you wish to wish",
+    "The sixth sick sheik's sixth sheep's sick",
+    "Fuzzy Wuzzy was a bear, Fuzzy Wuzzy had no hair, Fuzzy Wuzzy wasn't very fuzzy, was he",
+    "If a dog chews shoes, whose shoes does he choose",
+    "Which witch is which, Which witch is which, Which witch is which"
   ];
   return sentences[Math.floor(Math.random() * sentences.length)];
 };
