@@ -10,6 +10,7 @@ import {
   MessageCircle,
   BookOpenCheck,
   Mic,
+  MessageSquarePlus
 } from "lucide-react";
 import SkilligrIcon from "../assets/skilligr.jsx";
 
@@ -60,7 +61,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             onClick={handleDropdownToggle}
             className="flex items-center gap-2 px-3 py-2 w-full text-left rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
           >
-            <Briefcase className="w-5 h-5" />
+            <MessageCircle className="w-5 h-5" />
             <span>Soft Skill Hub</span>
           </button>
           <div
@@ -107,7 +108,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           to="/feedback"
           className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
         >
-          <MessageCircle className="w-5 h-5" />
+          <MessageSquarePlus className="w-5 h-5" />
           <span>Feedback</span>
         </Link>
       </nav>

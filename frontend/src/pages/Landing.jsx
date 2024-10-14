@@ -19,6 +19,7 @@ import {
   Bell,
   Calendar,
   MessageCircle,
+  MessageSquarePlus
 } from "lucide-react";
 
 export default function Landing() {
@@ -73,7 +74,7 @@ export default function Landing() {
                 </Card>
                 <Card>
                   <CardHeader>
-                    <Briefcase className="w-8 h-8" />
+                    <MessageCircle className="w-8 h-8" />
                     <h4 className="text-xl font-bold">Soft Skill Hub</h4>
                   </CardHeader>
                   <CardContent>
@@ -149,7 +150,7 @@ export default function Landing() {
                 </Card>
                 <Card>
                   <CardHeader>
-                    <MessageCircle className="w-8 h-8" />
+                    <MessageSquarePlus className="w-8 h-8" />
                     <h4 className="text-xl font-bold">Feedback</h4>
                   </CardHeader>
                   <CardContent>
