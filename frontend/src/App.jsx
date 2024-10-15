@@ -28,6 +28,7 @@ import AdminResources from "./pages/admin/learningResources/LearningResources";
 import AdminJobPosts from "./pages/admin/jobs/AJobPosts";
 import AdminEventPosts from "./pages/admin/events/AEventPosts";
 import Notifications from "./pages/admin/notifications/Notifications";
+import AdminFeedback from "./pages/admin/AFeedback";
 import NotFound from "./pages/404";
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
       <Route path="/admin/jobs" element={<AdminRoute><AdminJobPosts /></AdminRoute>} />
       <Route path="/admin/events" element={<AdminRoute><AdminEventPosts /></AdminRoute>} />
       <Route path="/admin/notifications" element={<AdminRoute><Notifications /></AdminRoute>} />
+      <Route path="/admin/feedback" element={<ProtectedRoute><AdminFeedback /></ProtectedRoute>} />
 
       {/* User Routes */}
       <Route path="/user" element={<ProtectedRoute><UDashboard /></ProtectedRoute>} />
@@ -89,6 +91,7 @@ function App() {
 
       {/* Misc Routes */}
       <Route path="*" element={<ProtectedRoute><NotFound/></ProtectedRoute>} />
+      
     </Routes>
   );
 }
