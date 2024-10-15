@@ -28,6 +28,7 @@ import AdminResources from "./pages/admin/learningResources/LearningResources";
 import AdminJobPosts from "./pages/admin/jobs/AJobPosts";
 import AdminEventPosts from "./pages/admin/events/AEventPosts";
 import Notifications from "./pages/admin/notifications/Notifications";
+import AdminFeedback from "./pages/admin/AFeedback";
 
 function App() {
   const publicRoutes = ["/", "/login", "/signup", "/reset", "/update"]; //These routes are accessible with and without authentication
@@ -73,6 +74,7 @@ function App() {
       <Route path="/admin/jobs" element={<ProtectedRoute><AdminJobPosts /></ProtectedRoute>} />
       <Route path="/admin/events" element={<ProtectedRoute><AdminEventPosts /></ProtectedRoute>} />
       <Route path="/admin/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+      <Route path="/admin/feedback" element={<ProtectedRoute><AdminFeedback /></ProtectedRoute>} />
     </Routes>
   );
 }
