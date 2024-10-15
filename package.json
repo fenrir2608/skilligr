@@ -1,5 +1,5 @@
 {
-  "name": "SKILLIGR",
+  "name": "skilligr",
   "version": "1.0.0",
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
