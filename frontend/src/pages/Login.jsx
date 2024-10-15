@@ -36,7 +36,12 @@ const Login = () => {
       });
       const data = await response.json();
       if (data.success) {
-        navigate("/");
+        if (authStatus?.role === "admin") {
+          navigate("/admin");
+        }
+        else{
+          navigate("/");
+        }
       } else {
         console.error("Login failed");
       }

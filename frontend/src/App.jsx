@@ -28,6 +28,7 @@ import AdminResources from "./pages/admin/learningResources/LearningResources";
 import AdminJobPosts from "./pages/admin/jobs/AJobPosts";
 import AdminEventPosts from "./pages/admin/events/AEventPosts";
 import Notifications from "./pages/admin/notifications/Notifications";
+import NotFound from "./pages/404";
 
 function App() {
   const publicRoutes = ["/", "/login", "/signup", "/reset", "/update"]; //These routes are accessible with and without authentication
@@ -44,15 +45,31 @@ function App() {
     return children;
   };
 
+  const AdminRoute = ({ children }) => {
+    if (!authStatus || authStatus.role !== "admin") {
+      return <Navigate to="/login" replace />;
+    }
+    return children;
+  };
+
   return (
     <Routes>
+
+      {/* Public Routes */}
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/reset" element={<ForgotPassword />} />
       <Route path="/update" element={<UpdatePassword />} />
       
-      <Route path="/admin" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      {/* Admin Routes */}
+      <Route path="/admin" element={<AdminRoute><Dashboard /></AdminRoute>} />
+      <Route path="/admin/resources" element={<AdminRoute><AdminResources /></AdminRoute>} />
+      <Route path="/admin/jobs" element={<AdminRoute><AdminJobPosts /></AdminRoute>} />
+      <Route path="/admin/events" element={<AdminRoute><AdminEventPosts /></AdminRoute>} />
+      <Route path="/admin/notifications" element={<AdminRoute><Notifications /></AdminRoute>} />
+
+      {/* User Routes */}
       <Route path="/user" element={<ProtectedRoute><UDashboard /></ProtectedRoute>} />
       <Route path="/resources" element={<ProtectedRoute><LearningResources /></ProtectedRoute>} />
       <Route path="/notifications" element={<ProtectedRoute><UNotifications /></ProtectedRoute>} />
@@ -69,10 +86,9 @@ function App() {
       <Route path="/career/paths" element={<ProtectedRoute><AllLearningPaths /></ProtectedRoute>} />
       <Route path="/career/assessment" element={<ProtectedRoute><CareerAssessment /></ProtectedRoute>} />
       <Route path="/resources/college" element={<ProtectedRoute><CollegeResources /></ProtectedRoute>} />
-      <Route path="/admin/resources" element={<ProtectedRoute><AdminResources /></ProtectedRoute>} />
-      <Route path="/admin/jobs" element={<ProtectedRoute><AdminJobPosts /></ProtectedRoute>} />
-      <Route path="/admin/events" element={<ProtectedRoute><AdminEventPosts /></ProtectedRoute>} />
-      <Route path="/admin/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
+
+      {/* Misc Routes */}
+      <Route path="*" element={<ProtectedRoute><NotFound/></ProtectedRoute>} />
     </Routes>
   );
 }

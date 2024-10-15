@@ -30,6 +30,7 @@ export const useAuth = (publicRoutes = []) => {
             success: true,
             message: data.message,
             fullName: data.full_name,
+            role: data.role,
           });
         } else {
           setAuthStatus(null);
@@ -43,11 +44,9 @@ export const useAuth = (publicRoutes = []) => {
     };
 
     if (!token) {
-      // If there's no token, set authStatus to null
       setAuthStatus(null);
       setLoading(false);
     } else {
-      // If there's a token, always verify it, regardless of the route
       verifyToken();
     }
   }, [location.pathname]);

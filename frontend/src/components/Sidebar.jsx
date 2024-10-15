@@ -13,10 +13,92 @@ import {
   MessageSquarePlus
 } from "lucide-react";
 import SkilligrIcon from "../assets/skilligr.jsx";
+import Spinner from "./Spinner";
+import { useAuth } from "../hooks/auth";
+
+
+const adminSidebar = [
+  {
+    path: "/admin",
+    name: "Admin Dashboard",
+    icon: <Home className="w-5 h-5" />,
+  },
+  {
+    path: "/admin/resources",
+    name: "Manage Resources",
+    icon: <Book className="w-5 h-5" />,
+  },
+  {
+    path: "/admin/jobs",
+    name: "Manage Jobs",
+    icon: <Briefcase className="w-5 h-5" />,
+  },
+  {
+    path: "/admin/events",
+    name: "Manage Events",
+    icon: <Calendar className="w-5 h-5" />,
+  },
+  {
+    path: "/admin/notifications",
+    name: "Manage Notifications",
+    icon: <Bell className="w-5 h-5" />,
+  },
+];
+
+const userSidebar = [
+  {
+    path: "/",
+    name: "Home",
+    icon: <Home className="w-5 h-5" />,
+  },
+  {
+    path: "/resources",
+    name: "Learning Resources",
+    icon: <Book className="w-5 h-5" />,
+  },
+  {
+    path: "/career",
+    name: "Career Clarity",
+    icon: <Compass className="w-5 h-5" />,
+  },
+  {
+    path: "/softskills/pronunciation",
+    name: "Pronunciation",
+    icon: <Mic className="w-5 h-5" />,
+  },
+  {
+    path: "/softskills/grammar",
+    name: "Grammar",
+    icon: <BookOpenCheck className="w-5 h-5" />,
+  },
+  {
+    path: "/notifications",
+    name: "Notifications",
+    icon: <Bell className="w-5 h-5" />,
+  },
+  {
+    path: "/jobs",
+    name: "Jobs",
+    icon: <Briefcase className="w-5 h-5" />,
+  },
+  {
+    path: "/events",
+    name: "Events",
+    icon: <Calendar className="w-5 h-5" />,
+  },
+  {
+    path: "/feedback",
+    name: "Feedback",
+    icon: <MessageSquarePlus className="w-5 h-5" />,
+  },
+];
+
 
 const Sidebar = ({ isOpen, onClose }) => {
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
-
+  const { authStatus,loading } = useAuth();
+  const role = authStatus?.role;
+  if (loading) return <Spinner/>;
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -30,88 +112,47 @@ const Sidebar = ({ isOpen, onClose }) => {
     >
       <div className="flex items-center mb-8">
         <Link to="/" className="flex items-center">
-          <SkilligrIcon className="w-2 h-2 mr-4" />
+          <SkilligrIcon className="w-6 h-6 mr-4" />
           <h1 className="text-xl font-bold ml-3">Skilligr</h1>
         </Link>
-      </div>
-      <nav className="space-y-2">
-        <Link
-          to="/"
-          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
-        >
-          <Home className="w-5 h-5" />
-          <span>Home</span>
-        </Link>
-        <Link
-          to="/resources"
-          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
-        >
-          <Book className="w-5 h-5" />
-          <span>Learning Resources</span>
-        </Link>
-        <Link
-          to="/career"
-          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
-        >
-          <Compass className="w-5 h-5" />
-          <span>Career Clarity</span>
-        </Link>
-        <div>
-          <button
-            onClick={handleDropdownToggle}
-            className="flex items-center gap-2 px-3 py-2 w-full text-left rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
-          >
-            <MessageCircle className="w-5 h-5" />
-            <span>Soft Skill Hub</span>
-          </button>
-          <div
-            className={`ml-6 mt-2 space-y-2 transition-all duration-300 ease-in-out ${
-              isDropdownOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-            } overflow-hidden`}
-          >
-            <Link
-              to="/softskills/pronunciation"
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
-            >
-              <Mic className="w-5 h-5" /> Pronunciation
-            </Link>
-            <Link
-              to="/softskills/grammar"
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
-            >
-              <BookOpenCheck className="w-5 h-5" /> Grammar
-            </Link>
+        {role === "admin" && (
+          <div className="ml-2  text-xl font-semibold ">
+            <em>Admin</em>
           </div>
-        </div>
-        <Link
-          to="/notifications"
-          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
-        >
-          <Bell className="w-5 h-5" />
-          <span>Notifications</span>
-        </Link>
-        <Link
-          to="/jobs"
-          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
-        >
-          <Briefcase className="w-5 h-5" />
-          <span>Jobs</span>
-        </Link>
-        <Link
-          to="/events"
-          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
-        >
-          <Calendar className="w-5 h-5" />
-          <span>Events</span>
-        </Link>
-        <Link
-          to="/feedback"
-          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
-        >
-          <MessageSquarePlus className="w-5 h-5" />
-          <span>Feedback</span>
-        </Link>
-      </nav>
+        )}
+      </div>
+
+      {/* Navigation for Admin */}
+      {role === "admin" && (
+        <nav className="space-y-2">
+          {adminSidebar.map((route) => (
+            <Link
+              key={route.path}
+              to={route.path}
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
+            >
+              {route.icon}
+              <span>{route.name}</span>
+            </Link>
+          ))}
+        </nav>
+      )}
+
+       {/* Navigation for User */}
+       {role !== "admin" && (
+        <nav className="space-y-2">
+          {userSidebar.map((route) => (
+            <Link
+              key={route.path}
+              to={route.path}
+              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-muted transition-all duration-300 ease-in-out"
+            >
+              {route.icon}
+              <span>{route.name}</span>
+            </Link>
+          ))}
+        </nav>
+      )}
     </aside>
   );
 };

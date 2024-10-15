@@ -361,7 +361,7 @@ export const verifyCookie = async (req, res) => {
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
 
     const result = await conn.query(
-      `SELECT full_name FROM users WHERE email = ?`,
+      `SELECT full_name,role FROM users WHERE email = ?`,
       [decoded.id]
     );
 
@@ -376,6 +376,7 @@ export const verifyCookie = async (req, res) => {
       success: true,
       message: "User verified successfully.",
       full_name: result[0][0].full_name,
+      role: result[0][0].role,
     });
   } catch (err) {
     return res.status(500).json({
