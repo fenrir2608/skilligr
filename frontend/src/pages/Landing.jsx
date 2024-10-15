@@ -43,16 +43,16 @@ export default function Landing() {
             {role === "admin" ? (
               <div className="font-bold grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Button className="text-md transform transition-transform duration-300 hover:scale-105">
-                  Schedule Notifications
+                  <Link to="/admin/notifications">Schedule Notifications</Link>
                 </Button>
                 <Button className="text-md transform transition-transform duration-300 hover:scale-105">
-                  Approve New Students
+                  <Link to="/admin/approve">Approve New Students</Link>
                 </Button>
                 <Button className="text-md transform transition-transform duration-300 hover:scale-105">
-                  Add New Resources
+                  <Link to="/admin/resources">Add New Resources</Link>
                 </Button>
                 <Button className="text-md transform transition-transform duration-300 hover:scale-105">
-                  Manage Events
+                  <Link to="/admin/events">Manage Events</Link>
                 </Button>
               </div>
             ) : (

@@ -31,6 +31,7 @@ export const useAuth = (publicRoutes = []) => {
             message: data.message,
             fullName: data.full_name,
             role: data.role,
+            status: data.status,
           });
         } else {
           setAuthStatus(null);

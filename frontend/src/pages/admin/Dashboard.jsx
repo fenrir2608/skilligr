@@ -17,33 +17,13 @@ import Sidebar from "../../components/Sidebar";
 import Header from "../../components/Header";
 import { Bell, Calendar, Users, ClipboardList } from "lucide-react";
 
-// Dummy data for demonstration
-const initialUsers = [
-  { id: 1, name: "John Doe", approved: false },
-  { id: 2, name: "Jane Smith", approved: false },
-  { id: 3, name: "Sam Wilson", approved: false },
-  { id: 4, name: "Emily Davis", approved: false },
-];
-
 export default function Dashboard() {
   const { authStatus, loading } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [users, setUsers] = useState(initialUsers); // Using dummy data
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  const handleApprove = (id) => {
-    // Update the user to approved in the local state
-    setUsers(
-      users.map((user) => (user.id === id ? { ...user, approved: true } : user))
-    );
-  };
-
-  const handleReject = (id) => {
-    // Remove the user from the list in the local state
-    setUsers(users.filter((user) => user.id !== id));
-  };
-
+ 
   if (loading) return <Spinner />;
 
   return (
@@ -61,7 +41,7 @@ export default function Dashboard() {
             <Card>
               <CardHeader className="flex items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Pending Approvals
+                  Pending Approvals                
                 </CardTitle>
                 <ClipboardList className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
@@ -110,49 +90,6 @@ export default function Dashboard() {
                 <p className="text-xs text-muted-foreground">Upcoming events</p>
               </CardContent>
             </Card>
-          </div>
-
-          {/* User Approval List Heading */}
-          <h2 className="text-xl font-semibold mt-8">User Approval List</h2>
-
-          {/* User Approval Section */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mt-4">
-            {users.length ? (
-              users.map((user) => (
-                <Card key={user.id}>
-                  <CardHeader className="flex items-center justify-between pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      {user.name}
-                    </CardTitle>
-                    <p className="text-xs text-muted-foreground">
-                      ID: {user.id}
-                    </p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between">
-                      <Button
-                        onClick={() => handleApprove(user.id)}
-                        disabled={user.approved}
-                        variant="success"
-                        className="text-white bg-green-500 hover:bg-green-600"
-                      >
-                        {user.approved ? "Approved" : "Approve"}
-                      </Button>
-                      <Button
-                        onClick={() => handleReject(user.id)}
-                        variant="destructive"
-                      >
-                        Reject
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                No pending approvals.
-              </p>
-            )}
           </div>
         </main>
       </div>

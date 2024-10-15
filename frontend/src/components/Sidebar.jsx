@@ -10,7 +10,8 @@ import {
   MessageCircle,
   BookOpenCheck,
   Mic,
-  MessageSquarePlus
+  MessageSquarePlus,
+  UserCheck,
 } from "lucide-react";
 import SkilligrIcon from "../assets/skilligr.jsx";
 import Spinner from "./Spinner";
@@ -22,6 +23,11 @@ const adminSidebar = [
     path: "/admin",
     name: "Admin Dashboard",
     icon: <Home className="w-5 h-5" />,
+  },
+  {
+    path: "/admin/approve",
+    name: "Approve Users",
+    icon: <UserCheck className="w-5 h-5" />,
   },
   {
     path: "/admin/resources",
@@ -42,6 +48,11 @@ const adminSidebar = [
     path: "/admin/notifications",
     name: "Manage Notifications",
     icon: <Bell className="w-5 h-5" />,
+  },
+  {
+    path: "/admin/feedback",
+    name: "Manage Feedback",
+    icon: <MessageCircle className="w-5 h-5" />,
   },
 ];
 

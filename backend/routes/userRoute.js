@@ -10,6 +10,8 @@ import {
   removeUser,
   activateUser,
   verifyCookie,
+  getUnapprovedUsers,
+  approveUser,
 } from "../controllers/userController.js";
 import { verifyAdmin } from "../middlewares/authMiddleware.js";
 
@@ -21,7 +23,7 @@ router.post("/signup", signup);
 router.get("/logout", logout);
 router.post("/reset", reset);
 router.put("/reset", update);
-router.post("/verifyCookie",verifyCookie);
+router.post("/verifyCookie", verifyCookie);
 
 //Protected Routes
 router.put("/admin/activate", activateUser);
@@ -30,5 +32,7 @@ router
   .get(verifyAdmin, viewUser)
   .put(verifyAdmin, updateUser)
   .delete(verifyAdmin, removeUser);
+router.get("/unapproved", verifyAdmin, getUnapprovedUsers);
+router.put("/approve", verifyAdmin, approveUser);
 
 export default router;

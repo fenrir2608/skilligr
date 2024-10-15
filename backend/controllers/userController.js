@@ -314,6 +314,7 @@ export const removeUser = async (req, res) => {
     const { userId } = req.body;
 
     await conn.query(`UPDATE users SET isDeleted = 1 WHERE id = ?`, [userId]);
+    await conn.query(`UPDATE user_details SET is_deleted = 1 WHERE user_id = ?`, [userId]);
 
     return res.status(200).json({
       success: true,
@@ -361,7 +362,10 @@ export const verifyCookie = async (req, res) => {
     const decoded = jwt.verify(token, process.env.TOKEN_KEY);
 
     const result = await conn.query(
-      `SELECT full_name,role FROM users WHERE email = ?`,
+      `SELECT u.full_name, u.role, ud.status 
+       FROM users u 
+       JOIN user_details ud ON u.id = ud.user_id 
+       WHERE u.email = ?`,
       [decoded.id]
     );
 
@@ -377,6 +381,7 @@ export const verifyCookie = async (req, res) => {
       message: "User verified successfully.",
       full_name: result[0][0].full_name,
       role: result[0][0].role,
+      status: result[0][0].status,
     });
   } catch (err) {
     return res.status(500).json({
@@ -386,3 +391,45 @@ export const verifyCookie = async (req, res) => {
     });
   }
 };
+
+export const getUnapprovedUsers = async (req, res) => {
+  try {
+    const users = await conn.query(`
+      SELECT ud.*, u.full_name, u.email, u.contact_no, u.profile_img
+      FROM user_details ud 
+      JOIN users u ON ud.user_id = u.id 
+      WHERE ud.status = 0 AND u.isDeleted = 0
+    `);
+
+    return res.status(200).json({
+      success: true,
+      message: "Unapproved users fetched successfully",
+      data: users[0],
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching unapproved users",
+      error: err.message,
+    });
+  }
+}
+
+export const approveUser = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    await conn.query(`UPDATE user_details SET status = 1 WHERE user_id = ?`, [userId]);
+
+    return res.status(200).json({
+      success: true,
+      message: "User account activated successfully",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred during account activation",
+      error: err.message,
+    });
+  }
+}

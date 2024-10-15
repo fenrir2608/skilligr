@@ -30,6 +30,7 @@ import AdminEventPosts from "./pages/admin/events/AEventPosts";
 import Notifications from "./pages/admin/notifications/Notifications";
 import AdminFeedback from "./pages/admin/AFeedback";
 import NotFound from "./pages/404";
+import ApproveUsers from "./pages/admin/ApproveUsers";
 
 function App() {
   const publicRoutes = ["/", "/login", "/signup", "/reset", "/update"]; //These routes are accessible with and without authentication
@@ -65,6 +66,7 @@ function App() {
       
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminRoute><Dashboard /></AdminRoute>} />
+      <Route path="/admin/approve" element={<AdminRoute><ApproveUsers /></AdminRoute>} />
       <Route path="/admin/resources" element={<AdminRoute><AdminResources /></AdminRoute>} />
       <Route path="/admin/jobs" element={<AdminRoute><AdminJobPosts /></AdminRoute>} />
       <Route path="/admin/events" element={<AdminRoute><AdminEventPosts /></AdminRoute>} />
