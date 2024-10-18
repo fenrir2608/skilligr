@@ -1,7 +1,6 @@
 import "./App.css";
 import { Route, Routes, Navigate } from "react-router-dom";
 import UDashboard from "./pages/user/UDashboard";
-import Dashboard from "./pages/admin/Dashboard";
 import Login from "./pages/Login";
 import Landing from "./pages/Landing";
 import Signup from "./pages/Signup";
@@ -65,7 +64,6 @@ function App() {
       <Route path="/update" element={<UpdatePassword />} />
       
       {/* Admin Routes */}
-      <Route path="/admin" element={<AdminRoute><Dashboard /></AdminRoute>} />
       <Route path="/admin/approve" element={<AdminRoute><ApproveUsers /></AdminRoute>} />
       <Route path="/admin/resources" element={<AdminRoute><AdminResources /></AdminRoute>} />
       <Route path="/admin/jobs" element={<AdminRoute><AdminJobPosts /></AdminRoute>} />

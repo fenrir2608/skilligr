@@ -35,10 +35,10 @@ export const createEvent = async (req, res) => {
 };
 
 export const viewAllEvent = async (req, res) => {
-  // TODO: Implement view events logic
   try {
     const [result] = await conn.query(`
             SELECT
+            e.id,
             e.title, 
             e.description,
             e.event_link,
@@ -72,7 +72,8 @@ export const viewEvent = async (req, res) => {
 
 
     const [result] = await conn.query(
-      `SELECT 
+      `SELECT
+    e.id, 
     e.title,
     e.description,
     e.event_link,

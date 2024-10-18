@@ -20,11 +20,6 @@ import { useAuth } from "../hooks/auth";
 
 const adminSidebar = [
   {
-    path: "/admin",
-    name: "Admin Dashboard",
-    icon: <Home className="w-5 h-5" />,
-  },
-  {
     path: "/admin/approve",
     name: "Approve Users",
     icon: <UserCheck className="w-5 h-5" />,

@@ -5,10 +5,20 @@ import {
   CardHeader,
   CardContent,
   CardFooter,
+  CardTitle,
 } from "@/components/ui/card";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
-import { Book, Compass, MessageCircle, ChevronRight } from "lucide-react";
+import {
+  Book,
+  Compass,
+  MessageCircle,
+  ChevronRight,
+  ClipboardList,
+  Users,
+  Bell,
+  Calendar,
+} from "lucide-react";
 import { useAuth } from "../hooks/auth";
 
 export default function Landing() {
@@ -33,6 +43,56 @@ export default function Landing() {
             </p>
           </div>
         </section>
+        <div className="w-4/5 mx-auto">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader className="flex items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">
+                Pending Approvals
+              </CardTitle>
+              <ClipboardList className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">12</div>
+              <p className="text-xs text-muted-foreground">Awaiting approval</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <Users className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">1,234</div>
+              <p className="text-xs text-muted-foreground">Active users</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">
+                New Notifications
+              </CardTitle>
+              <Bell className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">7</div>
+              <p className="text-xs text-muted-foreground">
+                Unread notifications
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">New Events</CardTitle>
+              <Calendar className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">4</div>
+              <p className="text-xs text-muted-foreground">Upcoming events</p>
+            </CardContent>
+          </Card>
+        </div>
+        </div>
         <section className="px-6 py-2">
           <div className="max-w-6xl mx-auto space-y-4">
             <div className="font-semibold text-3xl py-4">
@@ -41,20 +101,24 @@ export default function Landing() {
             </div>
 
             {role === "admin" ? (
-              <div className="font-bold grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Button className="text-md transform transition-transform duration-300 hover:scale-105">
-                  <Link to="/admin/notifications">Schedule Notifications</Link>
-                </Button>
-                <Button className="text-md transform transition-transform duration-300 hover:scale-105">
-                  <Link to="/admin/approve">Approve New Students</Link>
-                </Button>
-                <Button className="text-md transform transition-transform duration-300 hover:scale-105">
-                  <Link to="/admin/resources">Add New Resources</Link>
-                </Button>
-                <Button className="text-md transform transition-transform duration-300 hover:scale-105">
-                  <Link to="/admin/events">Manage Events</Link>
-                </Button>
-              </div>
+              <>
+                <div className="font-bold grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <Button className="text-md transform transition-transform duration-300 hover:scale-105">
+                    <Link to="/admin/notifications">
+                      Schedule Notifications
+                    </Link>
+                  </Button>
+                  <Button className="text-md transform transition-transform duration-300 hover:scale-105">
+                    <Link to="/admin/approve">Approve New Students</Link>
+                  </Button>
+                  <Button className="text-md transform transition-transform duration-300 hover:scale-105">
+                    <Link to="/admin/resources">Add New Resources</Link>
+                  </Button>
+                  <Button className="text-md transform transition-transform duration-300 hover:scale-105">
+                    <Link to="/admin/events">Manage Events</Link>
+                  </Button>
+                </div>
+              </>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <Card className="transform transition-transform duration-300 hover:scale-105 flex flex-col justify-between">

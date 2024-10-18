@@ -46,6 +46,7 @@ export const viewAllJob = async (req, res) => {
     try {
         const [result] = await conn.query(`
             SELECT
+            j.id,
             j.job_title,
             j.company_name,
             j.company_profile,
@@ -77,6 +78,7 @@ export const viewJob = async (req, res) => {
 
         const [result] = await conn.query(`
             SELECT
+            j.id,
             j.job_title,
             j.company_name,
             j.company_profile,

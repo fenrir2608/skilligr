@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useAuth } from "../../../hooks/auth";
@@ -6,50 +6,68 @@ import Spinner from "../../../components/Spinner";
 import Sidebar from "../../../components/Sidebar";
 import Header from "../../../components/Header";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function AdminResources() {
   const { loading } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [resources, setResources] = useState([]);
   const [fetching, setFetching] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedResource, setSelectedResource] = useState(null);
   const [newResource, setNewResource] = useState({
     title: "",
     type: "",
-    semester: 7,
+    semester: "7",
     dept: "",
     content: "",
   });
 
-  useEffect(() => {
-    const fetchResources = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/resources/viewAll",
-          {
-            credentials: "include",
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch resources");
+  const fetchResources = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/resources/viewAll",
+        {
+          credentials: "include",
         }
-        const data = await response.json();
-        setResources(data);
-      } catch (error) {
-        console.error("Failed to fetch resources", error);
-      } finally {
-        setFetching(false);
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch resources");
       }
-    };
-
-    fetchResources();
+      const data = await response.json();
+      setResources(data);
+    } catch (error) {
+      console.error("Failed to fetch resources", error);
+    } finally {
+      setFetching(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchResources();
+  }, [fetchResources]);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
@@ -70,18 +88,38 @@ export default function AdminResources() {
         throw new Error("Failed to add resource");
       }
 
-      const data = await response.json();
-      setResources((prevResources) => [...prevResources, data]);
-      setShowModal(false);
+      await fetchResources();
+      setShowAddModal(false);
       setNewResource({
         title: "",
         type: "",
-        semester: 7,
+        semester: "7",
         dept: "",
         content: "",
       });
     } catch (error) {
       console.error("Failed to add resource", error);
+    }
+  };
+
+  const handleDeleteResource = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/resources/delete/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      if (response.status === 403) {
+        console.log("You are not authorized to delete this resource");
+        return;
+      }
+      if (response.ok) {
+        await fetchResources();
+      }
+    } catch (error) {
+      console.error("Failed to delete resource", error);
     }
   };
 
@@ -104,99 +142,185 @@ export default function AdminResources() {
                 <h2 className="text-2xl font-bold mb-4">
                   Manage Learning Resources
                 </h2>
-                <Button onClick={() => setShowModal(true)} className="mb-4">
-                  Add Resource
-                </Button>
-                {showModal && (
-                  <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-                    <Card className="w-full max-w-2xl shadow-lg rounded-lg">
-                      <CardHeader>
-                        <CardTitle className="text-xl font-semibold">
-                          Add New Resource
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <form onSubmit={handleAddResource} id="add-resource-form">
-                          {["title", "type", "semester", "dept", "content"].map((field) => (
-                            <div key={field} className="mb-4">
-                              <label className="block text-sm font-medium mb-1">
-                                {field.charAt(0).toUpperCase() + field.slice(1)}
-                              </label>
-                              <input
-                                type={field === "semester" ? "number" : "text"}
-                                name={field}
-                                className="w-full border rounded p-2 text-gray-900"
-                                value={newResource[field]}
-                                onChange={handleInputChange}
-                                required
-                              />
-                            </div>
-                          ))}
-                        </form>
-                      </CardContent>
-                      <CardFooter className="flex justify-end">
-                        <Button
-                          type="button"
-                          onClick={() => setShowModal(false)}
-                          className="mr-2"
-                        >
-                          Cancel
+                <Dialog open={showAddModal} onOpenChange={setShowAddModal}>
+                  <DialogTrigger asChild>
+                    <Button className="mb-4">Add Resource</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Add New Resource</DialogTitle>
+                    </DialogHeader>
+                    <form onSubmit={handleAddResource} id="add-resource-form">
+                      <div className="grid gap-4">
+                        <div className="grid grid-cols-1 gap-2">
+                          <Label htmlFor="title">Title</Label>
+                          <Input
+                            id="title"
+                            name="title"
+                            placeholder="Resource title"
+                            required
+                            value={newResource.title}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 gap-2">
+                          <Label htmlFor="type">Type</Label>
+                          <Input
+                            id="type"
+                            name="type"
+                            placeholder="Resource type"
+                            required
+                            value={newResource.type}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="grid gap-2">
+                            <Label htmlFor="semester">Semester</Label>
+                            <Select
+                              name="semester"
+                              required
+                              value={newResource.semester}
+                              onValueChange={(value) =>
+                                handleInputChange({
+                                  target: { name: "semester", value },
+                                })
+                              }
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Choose a semester" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+                                  <SelectItem key={sem} value={sem.toString()}>
+                                    {sem}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="grid gap-2">
+                            <Label htmlFor="dept">Department</Label>
+                            <Select
+                              name="dept"
+                              required
+                              value={newResource.dept}
+                              onValueChange={(value) =>
+                                handleInputChange({
+                                  target: { name: "dept", value },
+                                })
+                              }
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Choose a department" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Computer Science">
+                                  Computer Science
+                                </SelectItem>
+                                <SelectItem value="Information Technology">
+                                  Information Technology
+                                </SelectItem>
+                                <SelectItem value="Mechanical">
+                                  Mechanical
+                                </SelectItem>
+                                <SelectItem value="Electrical">
+                                  Electrical
+                                </SelectItem>
+                                <SelectItem value="Civil">Civil</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 gap-2">
+                          <Label htmlFor="content">Content</Label>
+                          <Input
+                            id="content"
+                            name="content"
+                            placeholder="Resource content or URL"
+                            required
+                            value={newResource.content}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                        <Button type="submit" className="w-full">
+                          Add Resource
                         </Button>
-                        <Button type="submit" form="add-resource-form">
-                          Add
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </div>
-                )}
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
                 <div className="overflow-x-auto">
-                  <table className="min-w-full bg-background">
-                    <thead>
-                      <tr>
-                        <th className="py-2 px-4 border-b text-left">ID</th>
-                        <th className="py-2 px-4 border-b text-left">Title</th>
-                        <th className="py-2 px-4 border-b text-left">Type</th>
-                        <th className="py-2 px-4 border-b text-left">Semester</th>
-                        <th className="py-2 px-4 border-b text-left">Dept</th>
-                        <th className="py-2 px-4 border-b text-left">Added by</th>
-                        <th className="py-2 px-4 border-b text-left">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>ID</TableHead>
+                        <TableHead>Title</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Semester</TableHead>
+                        <TableHead>Dept</TableHead>
+                        <TableHead>Added by</TableHead>
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
                       {resources.length > 0 ? (
                         resources.map((resource) => (
-                          <tr key={resource.id}>
-                            <td className="py-2 px-4 border-b">{resource.id}</td>
-                            <td className="py-2 px-4 border-b">{resource.title}</td>
-                            <td className="py-2 px-4 border-b">{resource.type}</td>
-                            <td className="py-2 px-4 border-b">{resource.semester}</td>
-                            <td className="py-2 px-4 border-b">{resource.dept}</td>
-                            <td className="py-2 px-4 border-b">{resource.created_by}</td>
-                            <td className="py-2 px-4 border-b">
+                          <TableRow
+                            key={resource.id}
+                            onClick={() => setSelectedResource(resource)}
+                          >
+                            <TableCell>{resource.id}</TableCell>
+                            <TableCell>{resource.title}</TableCell>
+                            <TableCell>{resource.type}</TableCell>
+                            <TableCell>{resource.semester}</TableCell>
+                            <TableCell>{resource.dept}</TableCell>
+                            <TableCell>{resource.created_by}</TableCell>
+                            <TableCell>
                               <Button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleDeleteResource(resource.id);
+                                }}
                                 variant="ghost"
                                 className="p-1 rounded-full hover:bg-muted/20"
                               >
                                 <Trash2 className="w-5 h-5 text-muted-foreground hover:text-red-500" />
                               </Button>
-                            </td>
-                          </tr>
+                            </TableCell>
+                          </TableRow>
                         ))
                       ) : (
-                        <tr>
-                          <td colSpan="7" className="py-2 px-4 border-b text-center">
+                        <TableRow>
+                          <TableCell colSpan={7} className="text-center">
                             No resources found.
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       )}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 </div>
               </div>
             </div>
           </div>
         </main>
       </div>
+      {selectedResource && (
+        <Dialog open={!!selectedResource} onOpenChange={() => setSelectedResource(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{selectedResource.title}</DialogTitle>
+            </DialogHeader>
+            <div>
+              <p><strong>Type:</strong> {selectedResource.type}</p>
+              <p><strong>Semester:</strong> {selectedResource.semester}</p>
+              <p><strong>Department:</strong> {selectedResource.dept}</p>
+              <p><strong>Added by:</strong> {selectedResource.created_by}</p>
+              <p><strong>Content:</strong> {selectedResource.content}</p>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
